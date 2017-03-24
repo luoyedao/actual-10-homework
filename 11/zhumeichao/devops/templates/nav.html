@@ -1,0 +1,81 @@
+<nav class="navbar-default navbar-static-side" role="navigation"><!--左边框-->
+  <div class="sidebar-collapse">
+    <ul class="nav" id="side-menu">
+	<li class="nav-header"><!--头像信息-->
+	    <div class="dropdown profile-element">
+		<span>
+		    <img alt="image" class="img-circle" src="/static/img/root.jpg" height="66" width="66">
+		</span>
+		<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+		    <span class="clear">
+			<span class="block m-t-xs">
+			    <strong class="font-bold"><span style="color: #8095a8">账号：{{session.username}}</span></strong>
+			</span>
+			<span class="text-muted text-xs block">
+			    角色：{{session.role}}<b class="caret"></b>
+			</span>
+		    </span>
+		</a>
+		<ul class="dropdown-menu animated fadeInRight m-t-xs">
+		    <li><a href="/userinfo" class="iframe_user">个人信息</a></li>
+		    <li><a href="/logout">注销</a></li>
+		</ul>
+	    </div>
+	</li><!--头像信息-->
+	<script>
+	    $(".iframe_user").on('click', function(){
+		var url= $(this).attr("value");
+		layer.open({
+		    type: 2,
+		    title: '个人信息',
+		    maxmin: true,
+		    shift: 'top',
+		    border: [2, 0.3, '#1AB394'],
+		    shade: [0.5, '#000000'],
+		    shadeClose: true,
+		    area : ['800px' , '600px'],
+		    content: url
+		});
+	    });
+	</script>
+	<li class="user active">
+		<a href="/"><i class="fa fa-dashboard"></i><span class="nav-label">仪表盘</span></a>
+	</li>
+	<li class="group active" id="user">
+		<a><i class="fa fa-group"></i><span class="nav-label">用户管理</span><span class="fa arrow"></span></a>
+  		<ul class="nav nav-second-level collapse">
+		    <li><a href="/userinfo">个人信息</a></li>
+		    {% if session.role == "admin" %}
+		    <li><a href="/userlist">用户列表</a></li>
+		    {% endif %}
+		</ul> 
+	</li> <!-- 用户管理 -->
+	<li class="cmdb active" id="cmdb">
+		<a><i class="fa fa-inbox"></i> <span class="nav-label">资产管理</span><span class="fa arrow"></span></a>
+  		<ul class="nav nav-second-level collapse">
+		    {% if session.role == "admin" %}
+		    <li><a href="/idc">机房管理</a></li>
+		    <li><a href="/cabinet">机柜管理</a></li>
+		    <li><a href="/server">服务器管理</a></li>
+		    {% endif %}
+		</ul> 
+	</li> <!-- 资产管理 --> 
+	<li class="special_link">
+	   <a href="/" target="_blank"><i class="fa fa-database"></i><span class="nav-label">访问主页</span></a>
+	</li>
+    </ul>
+  </div>
+</nav><!--左边框-->
+<!--左边导航点击自动弹出下拉菜单-->
+<script>
+$('li').click(function(){
+    $('li').removeClass("active");   
+    $(this).addClass("active");   
+})
+$('#user').click(function(){
+    $("#user").children("ul").toggleClass("collapse");   
+})
+$('#cmdb').click(function(){
+    $("#cmdb").children("ul").toggleClass("collapse");   
+})
+</script>

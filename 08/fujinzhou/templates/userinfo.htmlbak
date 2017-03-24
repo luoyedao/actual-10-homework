@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人用户信息管理</title>
+</head>
+<body>
+<div>
+    你好{{username}},欢迎登陆用户管理系统! <a href="/loginout">退出</a>
+</div>
+    <h4>用户列表</h4>
+    <table border='1'>
+        <thead>
+            <tr>
+                <td>用户名</td>
+                <td>中文名</td>
+                <td>邮箱</td>
+                <td>手机号</td>
+                <td>角色</td>
+                <td>状态</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+
+        <tbody>
+          {% if users %}
+          <form action="/operation">
+                <tr>
+                    <td>{{users.name}}</td>
+                    <td>{{users.name_cn}}</td>
+                    <td>{{users.email}}</td>
+                    <td>{{users.mobile}}</td>
+                    <td>{{users.role}}</td>
+                    {% if users.status == 0 %}
+                        <td>激活</td>
+                    {% else %}
+                        <td>锁定</td>
+                    {% endif %}
+                    <td>
+                        <a href="/update?uid={{users['id']}}">更新</a>
+			<a href="/modpasswd">修改密码</a>
+                    </td>
+                </tr>
+            </form>
+          {%endif%}
+        </tbody>
+    </table>
+</body>
+</html>

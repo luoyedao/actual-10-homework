@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>POMS运维管理平台-登陆</title>
+<style>
+    .widths{
+	width:132px;
+}
+h1 {
+  position:fixed;
+  top:0px; left:0px;
+  width:100%;
+  color:#ffffff; background-color:#666666;
+  margin:0px;padding:10px;
+  height:60px;
+  z-index:2;}
+
+div#div_login{   
+   position:absolute; 
+   left:53%; /*向右移*/
+   top:50%; /*向下移*/
+   margin:-110px -160px;
+}
+#login_error{color:red}
+</style>
+</head>
+
+<body>
+<h1>POMS运维管理系统登入</h1>
+<div id="div_login">
+<h2 style="text-align:center">POMS系统登陆</h2>
+<hr/>
+<form method="POST" action="/"> 
+      账号:<input class="widths" type="text"  name="login_username"/>
+      <br/>
+      口令:<input class="widths" type="password" name="login_password"/>
+      <br/>
+      <input type="submit" value="登录" />
+      <input type="reset" value="重置" />
+</form>
+<hr/>
+<p id="login_error">{{login_error}}</p>
+<p>没有用户?可前往:<a href="/reguser">注册</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+</head>
+<body>
+    <form id="loginForm">
+        <input id="name" type="text" name="name" placeholder="username">
+        <input id="password" type="password" name="password" placeholder="password">
+        <input id="loginbtn" type="submit" value="登录">
+    </form>
+    <p id="errmsg" style="color:red"></p>
+
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#loginbtn').click(function(){
+    var str = $('#loginForm').serialize()  //拿到展示端post的参数
+    console.log(str) //打印出来
+    $.post('/login',str,function(data) {  //把参数传递给逻辑端的'/login',然后执行回调函数
+        console.log(data) //data应该是一个{'code':'0','result'='abc'}的str
+        data = JSON.parse(data) //将str转换为json
+        console.log(data) // 打印转换后的json看看
+        if (data['code']==0){       //code为0的时候即登录成功，执行成功后的登录操作
+            alert(data['result'])
+            location.href="/onelist" //跳转到用户界面
+
+        }else{
+            $('#errmsg').html(data['errmsg']) //使用$().html()为id为'#errmsg'的标签设值
+        }
+    })
+    return false
+})
+</script>
+</body>
+</html>
+
+<!-- http://localhost/login?name=fdsf&password=sdfas-->

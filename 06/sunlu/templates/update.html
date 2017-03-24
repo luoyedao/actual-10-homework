@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更新</title>
+</head>
+<body>
+<div style="width:auto; height: 100px; vertical-align: middle">
+    <h2>更新</h2>
+    {% if users %}
+        <div></div>
+        <form action="" method="post" name="update">
+            <p>姓名：<input type="text" name="name_cn" value="{{ users['name_cn'] }}" required="required"></p>
+            <p>邮箱：<input type="email" name="email" value="{{ users['email'] }}" required="required"></p>
+            <p>手机号：<input type="tel" name="mobile" value="{{ users['mobile'] }}" required="required"></p>
+            <p>状态：<select name="status">
+                <option name="yes" value="0">启用</option>
+                <option name="no" value="1">禁用</option>
+            </select></p>
+            <p>角色：<select name="role">
+                <option name="admin" value="1">管理员</option>
+                <option name="othenuser" value="2">其他用户</option>
+            </select></p>
+            <button type="submit">更新</button>
+        </form>
+        <a href="/userlist">
+            <button>退出</button>
+        </a>
+
+    {% else %}
+        <form action="" method="post" name="update">
+            <p>姓名：<input type="text" name="name_cn" required="required"></p>
+            <p>邮箱：<input type="email" name="email" required="required"></p>
+            <p>手机号：<input type="tel" name="mobile" required="required"></p>
+            <p>状态：<select name="status">
+                <option name="yes" value="0">启用</option>
+                <option name="no" value="1">禁用</option>
+            </select></p>
+            <p>角色：<select name="role">
+                <option name="admin" value="1">管理员</option>
+                <option name="othenuser" value="2">其他用户</option>
+            </select></p>
+            <p>
+                <button type="submit">更新</button>
+        </form>
+        <a href="/userlist">
+            <button>退出</button>
+        </a>
+    {% endif %}
+</div>
+</body>
+</html>

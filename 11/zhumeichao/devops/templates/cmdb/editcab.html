@@ -1,0 +1,44 @@
+<div class="wrapper wrapper-content animated fadeInRight"><!--机柜更新-->
+    <div class="row">
+        <div class="col-sm-12">
+		<form action="" class="form-horizontal nice-validator n-yellow" id="updateForm" method="post" novalidate="novalidate">
+			<div class="form-group">
+                                <div class="col-sm-8">
+                                    <input type="hidden" class="form-control" id="id" name="id" value="">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="name">机柜编号</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="name" name="name" value="">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="idc_name">机房简称</label>
+                                <div class="col-sm-8">
+				<select id="getting-single-2" name="idc_name" value="">
+                                {% for idc in idcname %}
+                                	<option value="{{ idc[0] }}">{{ idc[0] }}</option>
+                                {% endfor %}
+                            	</select>
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="u_num">使用U位</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="u_num" name="u_num" value="">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="power">电  源</label>
+                                <div class="col-sm-8">
+				<select id="power" name="power" value="" class="form-control">
+                            		<label><option value="0">上电 </label>
+                            		<label><option value="1">下电 </label>
+                        	</select>
+                                </div>
+                        </div>
+		</form><p id="result" style="color:red">{{ result }}</p>
+    		</div>
+    </div>
+</div><!--机柜更新-->

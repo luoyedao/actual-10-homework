@@ -1,0 +1,35 @@
+<html>
+<head>
+	<meta content="text/html;charset=UTF-8"></meta>
+	<style type="text/css">
+	body {text-align:center;margin:100px 400px;font-family:arial;background-color:#585858}
+	h1 {color:red;font-size:30px;}
+	p {color:#AFEEEE;}
+	</style>
+	<title>Login</title>
+</head>
+<body>
+	<div id="login">
+	
+	<div id="header">
+		<h1><b>McCoy ENV</h1>
+	</div>
+	
+	<div id="medium" style="margin:0px 100px" align="left">
+		<form action="/login">
+			<fieldset style="border-color:#FFA500;border:#F5DEB3 dashed 2px;" align="center">
+			<legend>Login</legend>
+			<h3>账号： <input type="text" name="username" size="30" style="border-style:solid;border-width:4px;margin:10px 0px">
+			<h3>密码： <input type="password" name="password" size="30" style="border-style:solid;border-width:4px;margin:10px 0px">
+			<br><br>
+			<input type="submit" name="login" value="登  陆"
+			style="width:100px;height:30px;font-family:arial;font-size:20px;border:0px solid;background:#69F;color:#FFF">
+		</form>
+			<p align="left"><a href="default.html">忘记密码</a>&nbsp;&nbsp;<a href="zhuce">立即注册</a>
+			<p style="color:red"><b>{{loginfo}}
+			</fieldset>
+	</div>
+	
+	</div>
+</body>
+<html>

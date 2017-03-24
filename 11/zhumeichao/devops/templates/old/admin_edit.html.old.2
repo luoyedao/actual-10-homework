@@ -1,0 +1,81 @@
+<div class="wrapper wrapper-content animated fadeInRight"><!--用户更新-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+		<form action="" class="form-horizontal nice-validator n-yellow" id="updateForm" method="post" novalidate="novalidate">
+		{% if user %}
+			<div class="form-group">
+                                <div class="col-sm-8">
+                                    <input type="hidden" class="form-control" name="id" value="{{user.id}}">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="name">用户名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="name" value="{{user.name}}">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="name_cn">中文名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="name_cn" value="{{user.name_cn}}">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="email">邮  件</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="email" value="{{user.email}}">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="phone">手机号</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="mobile" value="{{user.mobile}}">
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="role">角  色</label>
+                                <div class="col-sm-8">
+            				<select name="role" id='role' value="{{user.role}}" class="form-control">
+                        			<option value="user">普通用户</option>
+                        			<option value="admin">管理员</option>
+                			</select>
+                                </div>
+                        </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="status">状  态</label>
+                                <div class="col-sm-8">
+            				<select name="status" id='status' value="{{user.status}}" class="form-control">
+                        			<option value="0">可用</option>
+                        			<option value="1">禁用</option>
+                			</select>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button type="submit" class="btn btn-primary" id="upbtn">确认保存</button>
+                        </div>
+                {% endif %}
+		</form><p id="result" style="color:red">{{ result }}</p>
+    		</div>
+	    </div>
+	</div>
+    </div>
+</div><!--用户更新-->
+<script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#upbtn').click(function(){
+        var formdata = $('#updateForm').serialize()
+        $.post("/update",formdata,function(data){
+                udata = JSON.parse(data)
+                if (udata['code']==0){
+                        alert(udata['result'])
+                        location.href="/userlist"
+                }else{
+                        $('#result').html(udata['errmsg'])
+                }
+        })
+        return false
+})
+</script>

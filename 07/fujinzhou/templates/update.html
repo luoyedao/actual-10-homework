@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>修改用户</title>
+</head>
+<body>
+    <form action="/update" method="POST">
+        <p>用户名:<input type="text" name="name" value="{{user.name}}"></p>
+        <p>中文名:<input type="text" name="name_cn" value="{{user.name_cn}}"></p>
+        <p>Email:<input type="text" name="email" value="{{ user.email}}"></p>
+        <p>Mobile:<input type="text" name="mobile" value="{{ user.mobile }}"></p>
+        <p>角色:
+            <select name="role">
+                <option value="ops">ops</option>
+                <option value="php">php</option>
+                <option value="app">app</option>
+            </select>
+        </p>
+        <p>状态:
+            <select name="status">
+                <option value="0">激活</option>
+                <option value="1">锁定</option>
+            </select>
+        </p>
+        <input type="submit" value="修改">
+    </form>
+</body>
+</html>

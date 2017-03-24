@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更新页面</title>
+</head>
+<body>
+    <form action="/update" method="post" accept-charset="UTF-8">
+
+    <input id="id" type="hidden" name='id' value="{{user['id']}}">
+    <div>
+        <label>中文名:</label>
+        <input id="name_cn" type="text" name="name_cn" value="{{user['name_cn']}}">
+    </div>
+    <div>
+        <label>手机号:</label>
+        <input id="mobile" type="text" name="mobile" value="{{user['mobile']}}">
+    </div>
+    <div>
+        <label>邮箱号:</label>
+        <input id="email" type="text" name="mobile" value="{{user['email']}}">
+    </div>
+    {% if type=='admin' %}
+    <div>
+        <label>角色:</label>
+        <select name="role" id="role">
+            <option value="admin">管理员</option>
+            <option value="common">普通用户</option>
+        </select>
+    </div>
+    {% endif %}
+    <div>
+        <button type="submit">更新信息</button>
+        <button>退出</button>
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<div style="height:400px">
+    <div class="col-md-10">
+      <form class="form-horizontal" id="updateForm" role="form">
+            <input type="hidden" id='id' name="id" value='{{user.id}}'>
+            <div class="form-group">
+                <label for="name" class="col-md-4 control-label">用户名：</label>
+                <div class="col-md-6">
+                    <input id='name' type='text' name='name' value='{{user.name}}' readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="name_cn">中文名：</label>
+                <div class="col-md-6">
+                    <input id='name_cn' type='text' name='name_cn' value='{{user.name_cn}}' readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="mobile">手机号：</label>
+                <div class="col-md-6">
+                    <input id='mobile' type='text' name='mobile' value='{{user.mobile}}'>
+                </div>
+            </div>
+
+           <div class="form-group">
+                <label class="col-md-4 control-label" for="email">邮箱号：</label>
+                <div class="col-md-6">
+                    <input id='email' type='text' name='email' value='{{user.email}}'>
+                </div>
+            </div>
+
+            {% if session.user =='admin' %}
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="role">角色：</label>
+                <div class="col-md-6">
+                    <select name='role' id='role'>
+                        <option value="admin">管理员</option>
+                        <option value ="user">普通用户</option>
+                    </select>
+                </div>
+             </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="s">状态：</label>
+                <div class="col-md-6">
+                    <select name='status' id='status'>
+                        <option value=0>正常</option>
+                        <option value=1>锁定</option>
+                    </select>
+                </div>
+             </div>
+          {% endif %}
+
+        </form>
+    </div>
+</div>

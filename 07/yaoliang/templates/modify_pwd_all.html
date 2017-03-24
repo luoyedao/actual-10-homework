@@ -1,0 +1,47 @@
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+</head>
+<body>
+<div>
+  {% if result %}
+  <p style="color:red">{{ result }}</p>
+  {% endif%}
+  {% if user %}
+  <form  action='/modify_pwd_all' method='post' accept-charset="UTF-8">
+	<input type="hidden" id='id' name="id" value='{{user.id}}'>
+        <div>
+            <label>用户名&nbsp：</label>
+            <input id='name' type='text' name='name' readonly='true' value={{user.name}}>
+        </div> <!-- name -->
+
+        <div>
+            <label>旧密码&nbsp：</label>
+            <input id='password' type='password' name='password' required='required' value={{user.password}}>
+        </div><!-- password-->
+
+        <div>
+            <label>新密码&nbsp：</label>
+            <input id='password' type='password' name='newpassword' required='required'>
+        </div>
+
+        <div>
+            <label>重复密码：</label>
+            <input id='repassword' type='password' name='renewpassword' required='required'>
+        </div>
+        
+        <div>
+            <button type="submit">确认</button>
+        </div> <!--button-->
+
+    </form><!--form end-->
+    {% endif%}
+
+</div>
+</body>
+</html>
+
+
+
+

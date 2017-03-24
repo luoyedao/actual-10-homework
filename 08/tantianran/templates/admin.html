@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>POMS系统管理后台-用户列表</title></head>
+</body>
+<h2>用户列表</h2>
+<p>登录账户:{{name}}<p>
+<hr/>
+   <a href="/loginout"> <input type="button" name="update" value="注销"></a>
+   <a href="/admin/adduser/"> <input type="button" name="update" value="添加新用户"></a>
+<hr/>
+   <table border=1>
+	<tr>
+		<th>ID</th>
+		<th>账号</th>
+		<th>姓名</th>
+		<th>密码</th>
+		<th>邮箱</th>
+		<th>手机</th>
+		<th>角色</th>
+		<th>状态</th>
+		<th>创建时间</th>
+		<th>最后登录时间</th>
+		<th>操作</th>
+	</tr>
+	{% for user in users %}
+	<tr>
+		<td>{{user.id}}</td>
+		<td>{{user.name}}</td>
+		<td>{{user.name_cn}}</td>
+		<td>{{user.password}}</td>
+		<td>{{user.email}}</td>
+		<td>{{user.mobile}}</td>
+		{% if user.role == 'admin' %}
+		    <td><b>管理员</b></td>
+		{% elif user.role == 'user' %}
+		    <td><b>普通用户</b></td>
+		{% endif %}
+		{% if user.status == 1 %}
+		    <td><b>正常</b></td>
+		{% elif user.status == 0 %}
+		    <td><b>锁定</b></td>
+		{% else %}
+		    <td><b>异常</b></td>
+		{% endif %}
+		<td>{{user.create_time}}</td>
+		<td>{{user.last_time}}</td>
+		<td>
+		<a href="/admin?id={{ user.id }}"> <input type="button" value="删除"></a>
+		<a href="/update?id={{ user.id }}"> <input type="button" name="update" value="更新"></a>
+		<a href="/update/chagepasswd?id={{ user.id }}"> <input type="button" name="update" value="修改密码"></a>
+		</td>
+	</tr>
+	{% endfor %}
+   </table>
+<hr/>
+</body>
+</html>

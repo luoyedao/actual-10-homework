@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+</head>
+<body>
+    {%if result%}
+    <p style="color:red">{{result}}</p>
+    {%endif%}
+    <form action="/register" method="post" accept-charset="UTF-8">
+        <div>
+            <label>用户名:</label>
+            <input type="text" name="name">
+        </div>
+        <div>
+            <label>中文名:</label>
+            <input type="text" name="name_cn">
+        </div>
+        <div>
+            <label>手机号:</label>
+            <input type="text" name="mobile">
+        </div>
+        <div>
+            <label>邮箱号:</label>
+            <input type="text" name="email">
+        </div>
+        <div>
+            <label>角色:</label>
+            <select name="role">
+                <option value="admin">管理员</option>
+                <option value="common">普通用户</option>
+            </select>
+        </div>
+        <div>
+            <label>状态:</label>
+            <select name="role">
+                <option value="0">正常</option>
+                <option value="1">锁定</option>
+            </select>
+        </div>
+        <div>
+            <label>密码:</label>
+            <input type="password" name="password">
+        </div>
+        <div>
+            <label>重复密码:</label>
+            <input type="password" name="repwd">
+        </div>
+        <div>
+            <button type="submit">添加用户</button>
+            <a href="/userlist">返回</a>
+        </div>
+    </form>
+</body>
+</html>

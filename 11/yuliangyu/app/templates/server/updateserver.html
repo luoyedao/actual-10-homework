@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block breadcrumb %} 
+服务器更新
+{% endblock %}
+
+{% block main %} 
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+	<div class="col-sm-10">
+	    <div class="ibox float-e-margins">
+		<div class="ibox-title">
+		    <h5>填写基本信息</h5>
+		<div class="ibox-tools">
+			<a class="collapse-link">
+			    <i class="fa fa-chevron-up"></i>
+			</a>
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			    <i class="fa fa-wrench"></i>
+			</a>
+			<a class="close-link">
+			    <i class="fa fa-times"></i>
+			</a>
+        </div>
+       </div>   
+	<div class="ibox-content">  
+    <form  id="updateForm" class="form-horizontal">
+                            <input type="hidden" id='id' name="id" >
+                            <div class="form-group">
+                                <label for="hostname" class="col-sm-2 control-label  ">主机名<span class="red-fonts ">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="hostname" name="hostname" placeholder="servername" type="text" class="form-control" aria-required="true" data-tip="输入主机名">
+                                 </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="lan_ip" class="col-sm-2 control-label">内网IP<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="lan_ip" name="lan_ip" placeholder="lan_ip" type="text" class="form-control" aria-required="true" data-tip="内网IP">
+                                 </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="wan_ip" class="col-sm-2 control-label">外网IP<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="wan_ip" name="wan_ip" placeholder="wan_ip" type="text" class="form-control" aria-required="true" data-tip="外网IP">
+                                 </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="cabinet_id" class="col-sm-2 control-label">所在机柜ID</label>
+                                <div class="col-sm-8">
+                                <select id='cabinet_id' name="cabinet_id"  class='multiselect dropdown-toggle btn btn-default'>
+                                    {% for cabinet in  cabinets%}
+					{% if server.cabinet_id == cabinet.id %}
+                                        <option  value="{{ cabinet.id }}" selected="selected">{{ cabinet.name }}</option>
+					{% else %}
+                                        <option  value="{{ cabinet.id }}">{{ cabinet.name }}</option>
+					{% endif %}
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="op" class="col-sm-2 control-label">运维负责人<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="op" name="op" placeholder="op" type="text" class="form-control" aria-required="true" data-tip="运维负责人">
+                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="col-sm-2 control-label">联系电话</label>
+                                <div class="col-sm-8">
+                                    <input id="phone" name="phone" placeholder="phone" type="text" class="form-control" aria-required="true" data-tip="联系电话">
+                                 </div>
+                            </div>
+
+
+		<div class="hr-line-dashed"></div>
+                <div style="color:red" class="text-center" id="errmsg"></div>
+		<div class="form-group">
+			    <div class="col-sm-6 col-sm-offset-2">
+				<button id="submit_button" class="btn btn-primary">确认更新</button>
+				<button class="btn btn-white" type="reset">重置</button>
+			    </div>
+		</div>
+	</form> <!--form-->
+ </div> <!--ibox-content-->
+</div>  <!---->
+</div><!---->
+
+<script>
+
+$("#submit_button").click(function(){
+	$.post("/updatecab",$("#updateForm").serialize(),function(data){
+	    console.log(data)
+	    data=JSON.parse(data);
+	    if(data["code"] == 0){
+		swal({
+		    title:'Congratulation',
+		    text:data['result'],
+		    type:'success',
+		    confirmButtonText:'确定'
+		    },function(){
+			location.href='/cabinet'
+		    })
+	    }else{
+		swal('Error',data['errmsg'],'error')
+	    }
+	})
+    return false
+})
+</script>
+{% endblock %}

@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading"><!--标头-->
+    <div class="col-sm-10">
+        <h2>-_-机柜管理</h2>
+    </div>
+</div><!--标头-->
+<div class="wrapper wrapper-content animated fadeInRight"><!--机柜列表-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="">
+                        <button class="btn btn-sm btn-primary addcab"> 添加机柜 </button>
+                    </div>
+
+                    <table class="table table-striped table-bordered table-hover " id="editable">
+                        <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">机柜编号</th>
+                                <th class="text-center">所在机房</th>
+                                <th class="text-center">使用U位</th>
+                                <th class="text-center">是否上电</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+			{% if cabinfo %}
+                        {% for cab in cabinfo %}
+                            <tr class="gradeX">
+                                <td class="text-center">{{cab[0]}}</td>
+                                <td class="text-center">{{cab[1]}}</td>
+                                <td class="text-center">{{cab[2]}}</td>
+                                <td class="text-center">{{cab[3]}}</td>
+				{% if cab[4] == 0 %}
+				<td class="text-center" style="color:green">已上电</td>
+				{% else%}
+                                <td class="text-center" style="color:red">未上电</td>
+				{% endif %}
+                                <td class="text-center">
+                                    <button data-id="{{cab[0]}}" class="btn btn-xs btn-info update">编辑</button>
+                                    <button data-id="{{cab[0]}}" class="btn btn-xs btn-danger del">删除</button>
+                                </td>
+                            </tr>
+			{% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+		    <p id='errmsg'></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--用户列表-->
+<!--添加机柜模态窗-->
+<div class="modal fade" id="Addcab" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">添加机柜</h4>
+      </div>
+      <div class="modal-body">
+        {% include 'cmdb/addcab.html' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary addbtn">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--更新模态窗-->
+<div class="modal fade" id="UpModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">更新机柜信息</h4>
+      </div>
+      <div class="modal-body">
+        {% include 'cmdb/editcab.html' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary upbtn">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+$('#editable').DataTable({
+	"language": {
+	"lengthMenu": "每页 _MENU_ 条记录",
+	"zeroRecords": "没有找到记录",
+	"sInfo": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 ),显示第 _START_ 至 _END_ 项(总共 _TOTAL_ 项)",
+	"infoEmpty": "无记录",
+	"infoFiltered": "(从 _MAX_ 条记录过滤)",
+	"sSearch": "搜索:",
+	"oPaginate": {
+		"sFirst": "首页",
+		"sPrevious": "上一页",
+		"sNext": "下一页",
+		"sLast": "末页"
+		}
+	},
+	//"order": [[ 1,"desc" ]]
+	"order": [[ 1,"asc" ]]
+});
+
+$('.addcab').click(function(){
+        //$('#UpModal').modal('hide')
+        $('#Addcab').modal('show')
+	$('#getting-single').multiselect({
+//	    buttonWidth: '300px',
+//            dropRight: true
+	});
+})
+
+$('.addbtn').click(function(){
+        var formdata = $('#addForm').serialize()
+        $.post("/addcab",formdata,function(data){
+                udata = JSON.parse(data)
+                if (udata['code']==0){
+                       // alert(udata['result'])
+                        swal({
+                                title: "添加成功",
+                                type: "success",
+                                confirmButtonText: "确定"
+                        },function(){
+                                location.href="/cabinet"
+                        });
+                }else{
+                        //$('#result').html(udata['errmsg'])
+                        swal("MY GOD",("添加失败"),"error");
+                }
+        })
+        return false
+})
+//获取更新前的数据
+$('.update').click(function(){
+	//$('#UpModal').modal('hide')
+	$('#UpModal').modal('show')
+	$('#getting-single-2').multiselect({
+	});
+	var id = $(this).attr('data-id')
+	$.getJSON("/editcab",{'cid':id},function(data){
+		$("#id").val(data['id'])
+		$("#name").val(data['name'])
+		$("#idc_name").val(data['idc_name'])
+		$("#u_num").val(data['u_num'])
+		$("#power").val(data['power'])
+	})	
+})
+//提交更新后的数据
+$('.upbtn').click(function(){
+        var formdata = $('#updateForm').serialize()
+        $.post("/editcab",formdata,function(data){
+              udata = JSON.parse(data)
+              if (udata['code']==0){
+                     //alert(udata['result'])
+	      	swal({
+                              title: "更新成功",
+                              type: "success",
+                              confirmButtonText: "确定"
+                      },function(){
+                              location.href="/cabinet"
+                      });
+              }else{
+                      //$('#result').html(udata['errmsg'])
+	      	swal("MY GOD",("更新失败"),"error");
+              }
+        })
+        return false
+})
+
+$('.del').click(function(){
+	var id = $(this).attr('data-id')
+	$.getJSON("/delcab",{'cid':id},function(data){
+		if (data['code']==0){
+			swal({
+                                title: "删除成功",
+                                type: "success",
+                                confirmButtonText: "确定"
+                        },function(){
+                                location.href="/cabinet"
+                        });
+		}
+		else{
+                        swal("MY GOD",("删除失败"),"error");
+                }
+	})
+})
+</script>
+{% endblock %}

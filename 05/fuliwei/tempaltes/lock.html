@@ -1,0 +1,19 @@
+
+<h1>LOCK  LIST</h1>
+<p> {{messege}} </p>
+<table border=1px>
+	<thead>
+		<tr>
+			<th>NAME</th>
+			<th>PASSWORD</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for k,v in p_dict.items() %}
+		<tr>
+			<td>{{ k }}</td>
+			<td>{{ v }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

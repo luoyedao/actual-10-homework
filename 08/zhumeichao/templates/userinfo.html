@@ -1,0 +1,35 @@
+<p><b>--个人中心页面--</p>
+<a href='/logout'>退  出</a>
+<table border='2'>
+    <thead>
+        <tr>
+	    <td>用户名</td>
+	    <td>中文名</td>
+	    <td>邮箱</td>
+	    <td>手机号</td>
+	    <td>角色</td>
+	    <td>状态</td>
+	    <td>创建时间</td>
+	    <td>修改时间</td>
+	    <td>操作</td>
+        </tr>
+    </thead>
+
+    <tbody>
+      {% if user %}
+	<tr>
+	    <td>{{user["name"]}}</td>
+	    <td>{{user["name_cn"]}}</td>
+	    <td>{{user["email"]}}</td>
+	    <td>{{user["mobile"]}}</td>
+	    <td>{{user["role"]}}</td>
+	    <td>{{user["status"]}}</td>
+	    <td>{{user["create_time"]}}</td>
+	    <td>{{user["last_time"]}}</td>
+	    <td> <a href='/update?id={{user["id"]}}'><input type="button" id="upbtn" value="更新"></a>
+		<a href='/modpasswd?id={{user["id"]}}'><input type="button" id="chgbtn" value="修改密码"></a></td>
+	</tr>
+      {%endif%}
+    </tbody>
+</table>
+<p id="errmsg" style="color:red">{{ result }}</p>

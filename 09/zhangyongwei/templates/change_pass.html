@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <style type="text/css">
+        .left {
+            float: left;
+            height: 0px;
+        }
+
+        .right {
+            height: 0px;
+        }
+    </style>
+    <title>修改密码</title>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  ...
+</nav>
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-2 left">
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation" class="active"><a href="#">Home</a></li>
+          <li role="presentation"><a href="#">Profile</a></li>
+          <li role="presentation"><a href="#">Messages</a></li>
+        </ul>
+    </div>
+
+    <div class="col-md-3 right">
+        <form action="/users/change_pass/" method="post" class="form-horizontal">
+            <div class="form-group">
+                <lable for="name" class="col-md-2 control-label">用户名</lable>
+                <div class="col-md-10">
+                    <input type="text" name="name" value={{ name }} readonly>
+                </div>
+            </div>
+
+            {% if session.user != 'admin' %}
+            <div class="form-group">
+                <lable for="old_pass" class="col-md-2 control-label">旧密码</lable>
+                <div class="col-md-10">
+                    <input type="password" name="old_pass">
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <lable for="new_pass" class="col-md-2 control-label">新密码</lable>
+                <div class="col-md-10">
+                    <input type="password" name="new_pass">
+                </div>
+            </div>
+
+            <div class="col-md-4 col-md-offset-2">
+                <button class="btn btn-info" type="submit">修改</button>
+                <a href="/users/"> <button type="button" class="btn btn-info">返回</button></a>
+            </div>
+        </form>
+        <p style="color: red;">{{ status }}</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

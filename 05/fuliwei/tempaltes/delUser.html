@@ -1,0 +1,28 @@
+
+<h1>User Delete <h1>
+<form action="/del">
+	UserName:<input type="text" name='username'>
+   	PassWord:<input type="text" name='password'>
+    <input type="submit" value='confirm'>
+</form>
+
+
+<h1> del  user </h1>
+<p>{{ messege }}</p>
+
+<table border=1px>
+	<thead>
+		<tr>
+			<th>NAME</th>
+			<th>PASSWORD</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for k,v in p_dict.items() %}
+		<tr>
+			<td>{{ k }}</td>
+			<td>{{ v }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

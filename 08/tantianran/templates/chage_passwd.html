@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>POMS用户密码修改</title></head>
+</body>
+  <h2>{{user.name}}用户重置密码</h2>
+  <hr/>
+<!-- <form action="/update/chagepasswd/" method="post"> -->
+<form id="chagepwdForm">
+  <input id="ids" type="hidden" value={{user.id}} name="id" />
+  <p>原始密码: <input id="def_passwd" type="password" name="def_passwd" /></p>
+  <p>设置密码: <input id="password" type="password" name="password" /></p>
+  <p>确认密码: <input id="rep_passwd" type="password" name="rep_passwd" /></p>
+  <p>
+  <input id="submits" type="submit" value="提交更新" />
+  <a href="/admin"> <input type="button" value="放弃更改"></a>
+  </p>
+</form>
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#submits').on('click',function(){
+	var str = $('#chagepwdForm').serialize()
+	$.post("/update/chagepasswd/",str,function(data){
+		data = JSON.parse(data)
+		console.log(data)
+		if (data['code'] == 0){
+			alert(data['errmsg'])
+			location.href="/admin"
+		}else{
+			$('#errmsg').html(data['errmsg'])		
+		}
+	})
+		return false
+})
+</script>
+<p id="errmsg">{{info}}</p>
+</body>
+</html>
+
+

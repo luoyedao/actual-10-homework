@@ -1,0 +1,34 @@
+<body>
+    <form id="passwdForm">
+    <input type="hidden" name="id" value="{{uid}}">
+    <p><input type="password" name="o_password" placeholder="原始密码" ></p>
+    <p><input type="password" name="n_password" placeholder="新密码" ></p>
+    <p><input type="password" name="r_password" placeholder="确认密码"></p>
+    <p><button id="cgbtn">修改密码</button></p>
+    </form>
+    <div id="errmsg" style="color:red"></div>
+    <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+    <script>
+        $("#cgbtn").on("click",function(){
+            var data=$("#passwdForm").serialize();
+            $.ajax({
+                type:"post",
+                url:"/cgpassword",
+                data:data,
+                success:function(data){
+                    data=JSON.parse(data);
+                    console.log(data["tag"]);
+                    if(data["tag"] == 0){
+                        $("#errmsg").text(data["msg"]);
+                    }else{
+                        location.href='/';
+                    }
+                },
+                error:function(data){
+                    alert("ajax post error");
+                }
+            })
+            return false
+        })
+    </script>
+</body>

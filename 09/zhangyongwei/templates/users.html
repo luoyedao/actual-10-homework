@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <title>用户列表</title>
+    <style type="text/css">
+            .left {
+                float: left;
+                height: 0px;
+            }
+
+            .right {
+                height: 0px;
+            }
+        </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  ...
+</nav>
+
+
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-2 left">
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation" class="active"><a href="#">Home</a></li>
+          <li role="presentation"><a href="#">Profile</a></li>
+          <li role="presentation"><a href="#">Messages</a></li>
+        </ul>
+    </div>
+
+    <div class="col-md-10 col-md-offset-2 right">
+    {% if session.user != 'admin' %}
+        <a href="/users/regedit/"><button type="button" class="btn btn-primary" disabled="disabled">添加用户</button></a>
+    {% else %}
+        <a href="/users/regedit/"><button type="button" class="btn btn-primary">添加用户</button></a>
+    {% endif %}
+        <a href="/logout/"><button type="button" class="btn btn-default">退出登录</button></a>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <th>id</th>
+                <th>用户名</th>
+                <th>中文名</th>
+                <th>密码</th>
+                <th>邮箱</th>
+                <th>手机</th>
+                <th>角色</th>
+                <th>账号状态</th>
+                <th>账号创建时间</th>
+                <th>最后登录时间</th>
+                <th>操作</th>
+            </thead>
+            {% for user in users %}
+            <tbody>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.name_cn }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.mobile }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.status }}</td>
+                <td>{{ user.create_time }}</td>
+                <td>{{ user.last_time }}</td>
+                {% if session.user == 'admin' and user.name == 'admin' %}
+                <td>
+                    <a href="/users/update?id={{ user.id }}"><button type="button" class="btn btn-info">更新</button></a>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <a href="#" onclick="userdel({{ user.id }})"><button id="delete" type="button" class="btn btn-info" disabled="disabled">删除</button></a>
+                </td>
+                {% elif session.user == 'admin' and user.name != 'admin' %}
+                <td>
+                    <a href="/users/update?id={{ user.id }}"><button type="button" class="btn btn-info">更新</button></a>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <a href="#" onclick="userdel({{ user.id }})"><button id="delete" type="button" class="btn btn-info">删除</button></a>
+                </td>
+                {% elif session.user == user.name %}
+                <td>
+                    <a href="/users/update?id={{ user.id }}"><button type="button" class="btn btn-info">更新</button></a>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <a href="#" onclick="userdel({{ user.id }})"><button id="delete" type="button" class="btn btn-info" disabled="disabled">删除</button></a>
+                </td>
+                {% else %}
+                <td>
+                    <a href="/users/update?id={{ user.id }}"><button type="button" class="btn btn-info" disabled="disabled">更新</button></a>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info" disabled="disabled">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <a href="#" onclick="userdel({{ user.id }})"><button id="delete" type="button" class="btn btn-info" disabled="disabled">删除</button></a>
+                </td>
+                {% endif %}
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</div>
+<script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    function userdel(id){
+        $.get('/users/delete/', {"id":id}, function (result) {
+            window.location.href='/users/';
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>POMS系统管理后台-用户列表</title></head>
+</body>
+<h2>用户列表</h2>
+<hr/>
+ <form action="/admin/" method="post">
+  <th>账号: <input type="text" name="name" /></th>
+  <th><input type="submit" value="搜索" /></th>
+   <table border=1>
+	<tr>
+		<th>ID</th><th>账号</th><th>姓名</th><th>密码</th>
+		<th>邮箱</th><th>手机</th><th>角色</th><th>状态</th>
+		<th>创建时间</th><th>最后登录时间</th>
+	</tr>
+	<tr>
+		<td>{{queryinfo.id}}</td><td>{{queryinfo.name}}</td><td>{{queryinfo.name_cn}}</td>
+		<td>{{queryinfo.password}}</td><td>{{queryinfo.email}}</td><td>{{queryinfo.mobile}}</td>
+		{% if queryinfo.role == 'admin' %}
+		    <td><b>管理员</b></td>
+		{% elif queryinfo.role == 'queryinfo' %}
+		    <td><b>普通用户</b></td>
+		{% endif %}
+		{% if queryinfo.status == 1 %}
+		    <td><b>正常</b></td>
+		{% elif queryinfo.status == 0 %}
+		    <td><b>锁定</b></td>
+		{% endif %}
+		<td>{{queryinfo.create_time}}</td>
+		<td>{{queryinfo.last_time}}</td>
+	</tr>
+   </table>
+
+<br/>
+
+   <table border=1>
+	<tr>
+		<th>ID</th>
+		<th>账号</th>
+		<th>姓名</th>
+		<th>密码</th>
+		<th>邮箱</th>
+		<th>手机</th>
+		<th>角色</th>
+		<th>状态</th>
+		<th>创建时间</th>
+		<th>最后登录时间</th>
+		<th>操作</th>
+	</tr>
+	{% for user in users %}
+	<tr>
+		<td>{{user.id}}</td>
+		<td>{{user.name}}</td>
+		<td>{{user.name_cn}}</td>
+		<td>{{user.password}}</td>
+		<td>{{user.email}}</td>
+		<td>{{user.mobile}}</td>
+		{% if user.role == 'admin' %}
+		    <td><b>管理员</b></td>
+		{% elif user.role == 'user' %}
+		    <td><b>普通用户</b></td>
+		{% endif %}
+		{% if user.status == 1 %}
+		    <td><b>正常</b></td>
+		{% elif user.status == 0 %}
+		    <td><b>锁定</b></td>
+		{% else %}
+		    <td><b>异常</b></td>
+		{% endif %}
+		<td>{{user.create_time}}</td>
+		<td>{{user.last_time}}</td>
+		<td>
+		<a href="/admin/delete?id={{ user.id }}"> <input type="button" value="删除"></a>
+		<a href="/update?id={{ user.id }}"> <input type="button" name="update" value="更新"></a>
+		<a href="/update/chagepasswd?id={{ user.id }}"> <input type="button" name="update" value="修改密码"></a>
+		</td>
+	</tr>
+	{% endfor %}
+   </table>
+ </form>
+<hr/>
+   <a href="/admin/adduser/"> <input type="button" name="update" value="添加用户"></a>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <title>用户列表</title>
+      <link href="{{url_for('static', filename='bootstrap-3.3.5-dist/css/bootstrap.min.css')}}" rel="stylesheet" />
+      <style>
+        body {
+          padding-top: 50px;
+        }
+
+        .navbar-fixed-top {
+          border: 0;
+        }
+
+        .sidebar {
+          display: none;
+        }
+
+        @media (min-width: 768px) {
+          .sidebar {
+            position: fixed;
+            top: 51px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: block;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+            background-color: #f5f5f5;
+            border-right: 1px solid #eee;
+          }
+        }
+        .nav-sidebar {
+          margin-right: -21px; /* 20px padding + 1px border */
+          margin-bottom: 20px;
+          margin-left: -20px;
+        }
+        .nav-sidebar > li > a {
+          padding-right: 20px;
+          padding-left: 20px;
+        }
+        .nav-sidebar > .active > a,
+        .nav-sidebar > .active > a:hover,
+        .nav-sidebar > .active > a:focus {
+          color: #fff;
+          background-color: #428bca;
+        }
+        .main {
+          padding: 20px;
+        }
+        @media (min-width: 768px) {
+          .main {
+            padding-right: 40px;
+            padding-left: 40px;
+          }
+        }
+        .main .page-header {
+          margin-top: 0;
+        }
+      </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">CMDB</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>欢迎{{session.get('name', '')}}</a></li>
+            <li><a href="/loginout">退出登录</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/users/">用户管理</a></li>
+            <li><a href="/logs/">访问日志分析</span></a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% for msg in get_flashed_messages() %}
+                    <p class="bg-success">{{msg}}</p>
+            {% endfor %}
+            <p class="bg-success">{{msg}}</p>
+            <a class="btn btn-default" href="/register">添加用户</a>
+            <br/><br/>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>中文名</th>
+                        <th>邮箱</th>
+                        <th>手机号</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+			    <td>{{user['name']}}</td>
+                            <td>{{user.name_cn}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.mobile}}</td>
+                            <td>
+                            <a href="/update?id={{user['id']}}">修改</a>
+                            <a href="/delete?id={{user['id']}}" onclick="return confirm('确定删除吗?');">删除</a>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update-password" data-userid="{{user['id']}}" data-username="{{user['name']}}">修改密码</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <!--修改密码框-->
+    <div class="modal fade" id="update-password" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="exampleModalLabel">修改密码</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input type="hidden" id="password-userid"/>
+              <div class="form-group">
+                <label for="password-username" class="control-label">用户名</label>
+                <input type="text" class="form-control" id="password-username" readonly="readonly">
+              </div>
+              <div class="form-group">
+                <label for="password-user-password" class="control-label">用户密码</label>
+                <input type="password" class="form-control" id="password-user-password">
+              </div>
+              <div class="form-group">
+                <label for="password-repe-password" class="control-label">确认密码</label>
+                <input type="password" class="form-control" id="password-repr-password">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary" id="password-commit">更新密码</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<
+    <script type="text/javascript" src="{{url_for('static', filename='jquery-1.12.4.js')}}" ></script>
+    <script type="text/javascript" src="{{url_for('static', filename='bootstrap-3.3.5-dist/js/bootstrap.min.js')}}" ></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#update-password').on('show.bs.modal', function (event) {
+              var button = $(event.relatedTarget);
+              var username = button.data('username');
+              var userid = button.data('userid');
+              $('#password-userid').val(userid);
+              $('#password-username').val(username);
+          });
+          $('#password-commit').on('click', function(){
+              var params = {};
+              params['userid'] = jQuery('#password-userid').val();
+              params['repe-password'] = jQuery('#password-repr-password').val();
+              params['user-password'] = jQuery('#password-user-password').val();
+	      if (params['repe-password'] != params['user-password']){
+			alert("The passwords must also match.")
+		}else{
+		      console.log(params);
+		      $.post('/change-password',
+			  params, 
+			  function(data) {
+			      alert('更新成功');
+			      $('#update-password').modal('hide');
+			      //window.location.replace('/users/');
+			      // window.location.reload();
+			  },
+			  'json'
+              );}
+          });
+
+      });
+    </script>
+  </body>
+</html>
+

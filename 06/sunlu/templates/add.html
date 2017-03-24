@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h2>添加用户</h2>
+<form action="" method="post" id="add">
+    <p>用户名:<input type="text" name="name" required="required"></p>
+    <p>姓名:<input type="text" name="name_cn" required="required"></p>
+    <p>密码:<input type="password" name="password" required="required"></p>
+    <p>确认密码:<input type="password" name="re_password" required="required"></p>
+    <p>邮箱:<input type="email" name="email" required="required"></p>
+    <p>手机:<input type="tel" name="mobile" required="required"></p>
+    <p>状态：<select name="status">
+            <option name="yes" value="0">启用</option>
+            <option name="no" value="1">禁用</option>
+        </select></p>
+    <p>角色：<select name="role">
+    <option name="admin" value="1">管理员</option>
+    <option name="othenuser" value="2">其他用户</option>
+</select></p>
+    <input type="submit" value="添加">
+</form>
+<a href="/userlist"><button>返回</button></a>
+<p style="color: red;">{{ error }}</p>
+</body>
+</html>

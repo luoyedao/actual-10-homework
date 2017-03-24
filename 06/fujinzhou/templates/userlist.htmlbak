@@ -1,0 +1,36 @@
+<table border='1'>
+    <thead>
+        <tr>
+	    <td>用户名</td>
+	    <td>中文名</td>
+	    <td>邮箱</td>
+	    <td>手机号</td>
+	    <td>角色</td>
+	    <td>状态</td>
+	    <td>操作</td>
+        </tr>
+    </thead>
+
+    <tbody>
+      {% if users %}
+      {%for user in users%}
+	<tr>
+	    <td>{{user.name}}</td>
+	    <td>{{user.name_cn}}</td>
+	    <td>{{user.email}}</td>
+	    <td>{{user.mobile}}</td>
+            <td>{{user.role}}</td>
+	    {% if user.status == 0 %}
+	    	<td>激活</td>
+	    {% elif user.status == 1 %}
+ 	    	<td>锁定</td>
+	    {%endif%}
+	    <td> <input type="button" name="update" value="更新">
+        <input type="button" name="del" value="删除"></td>
+	</tr>
+      {%endfor%}
+      {%endif%}
+    </tbody>
+
+
+</table>

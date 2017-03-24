@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>POMS账号注册</title>
+<style>
+h1 {
+  position:fixed;
+  top:0px; left:0px;
+  width:100%;
+  color:#ffffff; background-color:#666666;
+  margin:0px;padding:10px;
+  height:60px;
+  z-index:2;}
+
+.widths{
+	width:200px;
+	}
+	
+div.div_registered{   
+	position:absolute;
+    left:53%; /*向右移*/
+    top:50%; /*向下移*/
+	margin:-180px 0 0 -190px;
+}
+#error_info{color:red}
+</style>
+
+</head>
+<body>
+<h1>POMS运维管理系统账户注册</h1>
+<div class="div_registered">
+<h3 style="text-align:center">请填写注册信息</h3>
+<hr />
+	<form method="POST" action="/reguser" id="registered">
+	登录账号:<input class="widths" type="text" name="reg_name">
+	</br>
+	中文姓名:<input class="widths" type="text" name="reg_name_cn">
+	</br>
+	设置密码:<input class="widths" type="password" name="reg_password">
+	</br>
+	确认密码:<input class="widths" type="password" name="repeat_password">
+	</br>
+	邮箱地址:<input class="widths" type="text" name="reg_email">
+	</br>
+	手机号码:<input class="widths" type="text" name="reg_mobile">
+	</br>
+	<label>您的角色:</label>
+	<select name="reg_role" id="reg_role">
+	    <option value="admin">管理员</option>
+	    <option value="user">普通用户</option>
+	</select>
+	</br>
+	<input type="submit" value="提交" />
+	<input type="reset" value="重置" />
+	</form>
+        
+<hr />
+<p id="error_info">{{error}}</p>
+</div>
+</body>
+</html>
+
+
+
+

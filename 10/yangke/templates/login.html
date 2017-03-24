@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 登录 | ReBoot运维管理平台</title>
+    <link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/css/animate.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name"><img src="/static/img/logo.png"></h1>
+            </div>
+            <div style="color: red" id="msg"></div>
+            <h2>Welcome to Reboot10</h2>
+            <form class="m-t" role="form" id="formLogin">
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control" placeholder="Username" required="length[6~50]">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required="">
+                </div>
+                <button id="loginbtn" class="btn btn-primary block full-width m-b">Login</button>
+            </form>
+            <p class="m-t"> <small><b>Copyright</b> Jumpserver.org Organization © 2014-2015</small> </p>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/static/js/jquery-2.1.1.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script>
+        $("#loginbtn").click(function () {
+            $.post("/login",$("#formLogin").serialize(),function (data) {
+                data = JSON.parse(data);
+                if (data["code"] == 0) {
+                    console.log(data)
+                    $("#msg").text(data["result"]);
+                } else {
+                    alert(data["result"]);
+                    location.href="/"
+                }
+            })
+            return false
+        })
+    </script>
+</body>
+
+</html>
+

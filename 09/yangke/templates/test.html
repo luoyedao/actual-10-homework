@@ -1,0 +1,16 @@
+<body>
+<button id="start">start ping</button>
+<button id="stop">stop ping</button>
+<div id="content">
+</div>
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+ $("#start").click(function(){
+    
+    $.post("/test",{cmd:"ping www.baidu.com"},function(data){
+        alert(data);
+        //$("#content").text(data);
+    })
+ })
+</script>
+</body>

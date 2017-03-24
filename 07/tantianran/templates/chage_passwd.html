@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>POMS用户密码修改</title></head>
+</body>
+  <h2>{{user.name}}用户重置密码</h2>
+  <hr/>
+<form action="/update/chagepasswd/" method="post">
+  <input type="hidden" value={{user.id}} name="id" />
+  <p>原始密码: <input type="password" name="def_passwd" /></p>
+  <p>设置密码: <input type="password" name="password" /></p>
+  <p>确认密码: <input type="password" name="rep_passwd" /></p>
+  <p>
+  <input type="submit" value="提交更新" />
+  <a href="/admin"> <input type="button" value="返回"></a>
+  </p>
+</form>
+<p>{{info}}</p>
+</body>
+</html>
+
+

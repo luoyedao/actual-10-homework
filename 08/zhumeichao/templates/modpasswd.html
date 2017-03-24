@@ -1,0 +1,29 @@
+<p><b>更改用户密码
+<table border='0'>
+	<form id="modpasswdForm" action="/modpasswd" method='POST' accept-charset="UTF-8">
+	{% if user %}
+        <tr>
+            <td><input type="hidden" name="id" value={{user.id}}></td>
+        </tr>
+        <tr>
+            <td><input type="hidden" name="name" value={{user.name}}></td>
+        </tr>
+        <tr>
+	    <td>原密码:</td>
+	    <td><input type="password" name="passwd"></td>
+        </tr>
+        <tr>
+	    <td>新密码:</td>
+	    <td><input type="password" name="passmd"></td>
+        </tr>
+        <tr>
+	    <td>确认密码</td>
+	    <td><input type="password" name="passrd"></td>
+        </tr>
+        <tr>
+	    <td><input type='submit' value="修改密码"></td>
+	    <td><b><a href="/userinfo">返回个人中心</td></a>
+        </tr>
+        {% endif %}
+	</form>
+</table><p style="color:red">{{ result }}</p>

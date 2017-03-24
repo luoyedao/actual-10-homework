@@ -1,0 +1,28 @@
+<table border='1'>
+    <thead>
+        <tr>
+        <td>User</td>
+        <td>Password</td>
+        <td>Delete</td>
+        <td>Modify</td>
+        </tr>
+    </thead>
+ 
+    <tbody>
+      {%for user in users%}
+      {%if user and users[user]%}
+    <tr>
+        <td>{{user}}</td>
+        <td>{{users[user]}}</td>
+        <td><a href='/deluser?username={{user}}'>delete</a></td>
+        <td><a href='/modify'>modify</a></td>
+    </tr>
+      {%endif%}
+      {%endfor%}
+    </tbody>
+ 
+ 
+</table>
+</div>
+<a href='/'>返回首页</a>
+<div>

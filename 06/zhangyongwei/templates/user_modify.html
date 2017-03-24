@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息修改</title>
+</head>
+<body>
+    <form action="/users/update/" method="post">
+        用户名: <input type="text" name="username" value="{{ user.get('name') }}" readonly><br><br>
+        密码: <input type="password" name="password" value="{{ user.get('password') }}"><br><br>
+        中文名: <input type="text" name="name_cn" value="{{ user.get('name_cn') }}"><br><br>
+        邮箱: <input type="text" name="email" value="{{ user.get('email') }}"><br><br>
+        手机: <input type="text" name="mobile" value="{{ user.get('mobile') }}"><br><br>
+        角色: <input type="text" name="role" value="{{ user.get('role') }}"><br><br>
+        账号状态: <input type="text" name="status" value="{{ user.get('status') }}"><br><br>
+        <button type="submit">修改</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,14 @@
+(dp0
+S'kk'
+p1
+S'kkkkkk'
+p2
+sS'yangruiyou'
+p3
+S'123456'
+p4
+sS'panda'
+p5
+S'123456'
+p6
+s.

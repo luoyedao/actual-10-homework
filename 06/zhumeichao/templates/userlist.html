@@ -1,0 +1,37 @@
+<form action="/oneuser">
+  <p><li><b>用户名：<input type='text' name='user'><input type='submit' value="查看用户信息"><br>
+</form>
+
+<table border='1'>
+    <thead>
+        <tr>
+	    <td>ID</td>
+	    <td>用户名</td>
+	    <td>中文名</td>
+	    <td>邮箱</td>
+	    <td>手机号</td>
+	    <td>角色</td>
+	    <td>状态</td>
+	    <td>操作</td>
+        </tr>
+    </thead>
+    <tbody>
+      {% if users %}
+      {% for user in users %}
+	<tr>
+	    <td>{{user[0]}}</td>
+	    <td>{{user[1]}}</td>
+	    <td>{{user[2]}}</td>
+	    <td>{{user[3]}}</td>
+	    <td>{{user[4]}}</td>
+	    <td>{{user[5]}}</td>
+	    <td>{{user[6]}}</td>
+	    <td> <a href='/update?id={{user[0]}}'><input type="button" name="update" value="更新"></a>
+                 <a href='/deluser?id={{user[0]}}'><input type="button" name="delete" value="删除"></a></td>
+	</tr>
+      {%endfor%}
+      {%endif%}
+    </tbody>
+</table>
+<p style="color:red">{{ result }}
+<p><b><a href="/">返回用户管理</a>

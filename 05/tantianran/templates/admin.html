@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>POMS运维管理平台-用户管理</title>
+</head>
+
+<body>
+<form action='/admin'>
+    查询:<input type="text" name='query_name'>
+    <input type='submit' value='query'>
+</form>
+
+<table border='1'>
+    <tbody>
+	<tr>
+	    <th>用户名</th>
+	    <th>密码</th>
+	</tr>		
+        <tr>
+	    <td>{{user_data}}</td>
+	    <td>{{pwd_data}}</td>
+	</tr>		
+    </tbody>
+</table>
+</br>
+
+<h3>用户列表</h3>
+</form action='/admin'>
+<table border='1'>
+    <thead>
+        <tr>
+	    <th>用户名</th>
+	    <th>密码</th>
+  	    <th>移除动作</th>
+	</tr>
+    </thead>
+    <tbody>
+	{% for k,v in passwd.items()%}
+	<tr>
+	    <td>{{k}}</td>
+	    <td>{{v}}</td>
+            <td><input type="radio" name="del_user" value={{k}}>选中</td>
+	</tr>
+	{%endfor%}
+    </tbody>
+</table>
+	<input type="submit" value="执行删除"/>
+</form>
+<p>返回登录页面<a href="/">返回</a></p>
+</body>
+</html>

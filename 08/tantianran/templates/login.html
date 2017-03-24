@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html><head><title>POMS用户登录</title></head>
+</body>
+<h2>用户登录</h2>
+<hr/>
+<!-- <form action="/login" method="post" -->
+<form id="loginForm">
+	<p>账号: <input id="name" type="text" name="name" /></p>
+	<p>口令: <input id="password" type="password" name="password" /></p>
+	<p><input id="loginbtn" type="submit" value="登录" /></p>
+</form>
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#loginbtn').on('click',function(){
+	var str = $('#loginForm').serialize()
+	$.post("/login",str,function(data){
+		data = JSON.parse(data)
+		console.log(data)
+		if (data['code'] == 0){
+			alert(data['errmsg'])
+			if (data['roles'] == 'admin'){
+			    location.href="/admin?name=" + data['name']
+			}else{
+			    location.href="/personal?name=" + data['name']
+			}	
+		}else{
+		    $('#errmsg').html(data['errmsg'])
+		}
+	})
+		return false
+})
+</script>
+<p id="errmsg">{{info}}</p>
+</body>
+</html>
+

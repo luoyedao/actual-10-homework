@@ -1,0 +1,99 @@
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>用户管理系统</title>
+</head>
+<body>
+<div>
+  <p style="color:red" id="errmsg"></p>
+  
+  <form id="updateForm"  accept-charset="UTF-8">
+        <input type="hidden" id='id' name="id">  <!--update need id-->
+        <div>
+            <label>用户名：</label>
+            <input id='name' type='text' name='name'>
+        </div> <!-- name -->
+
+        <div>
+            <label>中文名：</label>
+            <input id='name_cn' type='text' name='name_cn'>
+        </div><!-- name_cn-->
+
+        <div>
+            <label>手机号：</label>
+            <input id='mobile' type='text' name='mobile'>
+          </div><!-- mobile --> 
+        
+       <div>
+            <label>邮箱号：</label>
+            <input id='email' type='text' name='email'>
+        </div><!-- email -->
+
+        <div>
+            <label>角色：</label>
+            <select name='role' id='role'>
+                <option value="admin">管理员</option>
+                <option value="user">普通用户</option>
+            </select>
+         </div> <!--role-->
+    
+        <div>
+            <label>状态：</label>
+            <select name='status' id='status'>
+                <option value=0>正常</option> 
+                 <option value=1>锁定</option>
+            </select>
+         </div> <!--status-->
+        
+        <div>
+            <button type="submit" id="updatebtn">更新信息</button>
+            <button >退出</button>
+         </div> <!--button-->  
+    </form><!--form end-->
+</div>
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+/*通过ID获取数据并渲染更新表单*/
+var id = {{ uid }}
+var url = "getbyid?id="+id
+$.getJSON(url,function(data){
+  console.log(data)   //{'code':0,result:{....}}
+  if (data['code'] == 0){
+          data = data['result']
+          $('#id').val(data['id'])
+          $('#name').val(data['name'])
+          $('#name_cn').val(data['name_cn'])
+          $('#mobile').val(data['mobile'])
+          $('#email').val(data['email'])
+          $('#role').val(data['role'])
+          $('#status').val(data['status'])
+  }else{
+     $('#errmsg').html(data['errmsg'])
+  }
+})
+
+$('#updatebtn').on('click',function(){
+     var str = $('#updateForm').serialize()
+     $.post("/update",str,function(data){
+          //console.log(data)    
+          data = JSON.parse(data)
+          //console.log(data)   
+          if (data['code']==0){
+            location.href="/userlist"
+          
+          }else{
+            $('#errmsg').html(data['errmsg'])
+          }
+     })
+      return false
+
+})
+
+
+</script>
+</body>
+</html>
+
+
+
+

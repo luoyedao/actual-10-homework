@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Add User</title>
+</head>
+<body>
+<hr>
+    <form id="addForm">
+         <div>
+            <label>用户名：</label>
+            <input id='name' type='text' name='name' >
+        </div> <!-- name -->
+
+        <div>
+            <label>中文名：</label>
+            <input id='name' type='text' name='name_cn' >
+        </div> <!-- cn_name -->
+
+        <div>
+            <label>密码:</label>
+            <input type="password" name="password">
+        </div>
+
+        <div>
+            <label>再次输入密码:</label>
+            <input type="password" name="re_password">
+        </div>
+
+        <div>
+            <label>手机号：</label>
+            <input id='mobile' type='text' name='mobile'>
+        </div><!-- mobile --> 
+
+        <div>
+            <label>邮箱号：</label>
+            <input id='email' type='text' name='email'>
+        </div><!-- email -->
+
+        <div>
+            <label>角色：</label>
+            <select name='role' id='role'>
+                <option value="ops">admin</option>
+                <option value="ops">ops</option>
+                <option value="php">php</option>
+                <option value="app">app</option>
+            </select>
+         </div> <!--role-->
+
+         <div>
+            <label>状态：</label>
+            <select name='status' id='status'>
+                <option value=0>正常</option> 
+                <option value=1>锁定</option>
+            </select>
+         </div> <!--status-->
+
+         <div>
+            <button id="adduser">添加用户</button>
+        </div> <!--button--> 
+    </form>
+ 
+    <div style="color:red" id="errmsg"></div>
+
+
+    <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+    <script>
+    $("#adduser").on("click",function(){
+        $.ajax({
+            type:"post",
+            url:"/adduser",
+            data:$("#addForm").serialize(),
+            success:function(data){
+                data=JSON.parse(data);
+                if(data["tag"] == 0){
+                    $("#errmsg").text(data["msg"]);
+                }else{
+                    location.href="/";
+                }
+            }
+        })
+        return false
+    })
+    </script>
+
+</body>
+</html>

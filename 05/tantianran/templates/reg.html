@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>POMS账号注册</title>
+<style>
+h1 {
+  position:fixed;
+  top:0px; left:0px;
+  width:100%;
+  color:#ffffff; background-color:#666666;
+  margin:0px;padding:10px;
+  height:60px;
+  z-index:2;}
+
+.widths{
+	width:200px;
+	}
+	
+div.div_registered{   
+	position:absolute;
+    left:53%; /*向右移*/
+    top:50%; /*向下移*/
+	margin:-180px 0 0 -190px;
+}
+#reg_error{color:red}
+</style>
+
+</head>
+<body>
+<h1>POMS运维管理系统账户注册</h1>
+<div class="div_registered">
+<h3 style="text-align:center">请填写注册信息</h3>
+<hr />
+<form action="/reg">
+	注册账号:<input class="widths" type="text" name="reg_name" maxlength="20">
+	</br>
+	设置密码:<input class="widths" type="password" name="reg_pwd" maxlength="20">
+	</br>
+	确认密码:<input class="widths" type="password" name="confirm_pwd" maxlength="20">
+	</br>
+	<input type="submit" value="提交" />
+	<input type="reset" value="重置" />
+</form>
+<hr />
+<p id="reg_error">{{reg_error}}</p>
+<p>返回登录页面<a href="/admin">返回</a></p>
+</div>
+</body>
+</html>

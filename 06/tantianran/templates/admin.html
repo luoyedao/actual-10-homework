@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>POMS系统管理后台</title>
+<style>
+h1 {
+    position:fixed;
+    top:0px; left:0px;
+    width:100%;
+    color:#ffffff; background-color:#666666;
+    margin:0px;padding:10px;
+    height:60px;
+    z-index:2;}
+.widths{width:200px;}
+div.div_registered{
+    position:absolute;
+    left:30%; /*向右移*/
+    top:50%; /*向下移*/
+    margin:-180px 0 0 -190px;
+}
+</style>
+</head>
+<body>
+<h1>POMS系统管理后台</h1>
+<div class="div_registered">
+<h2 style="text-align:center">平台账户列表</h2>
+<hr/>
+<h3>用户信息查询</h3>
+<form method="POST" action='/admin'>
+    用户名:<input type="text" name='query_name'>
+    <input type='submit' value='搜索'>
+</form>
+<table border='1'>
+<tr>
+<th>项</th><th>ID</th><th>用户名</th><th>中文名</th><th>密码</th><th>邮箱</th><th>手机</th><th>角色</th><th>状态</th><th>创建时间</th><th>最后登录时间</th>
+</tr>
+<tr>
+<th>值</th><td>{{queryinfo['id']}}</td><td>{{queryinfo['name']}}</td><td>{{queryinfo['name_cn']}}</td><td>{{queryinfo['password']}}</td><td>{{queryinfo['email']}}</td><td>{{queryinfo['mobile']}}</td><td>{{queryinfo['role']}}</td>
+<td>{{queryinfo['status']}}</td><td>{{queryinfo['create_time']}}</td><td>{{queryinfo['last_time']}}</td>
+</tr>		
+</table>
+<hr/>
+<br/>
+
+<h3>用户信息删除</h3>
+<form method="POST" action="/admin">
+<table border='1'>
+<tr> 
+    <th>ID</th><th>用户名</th><th>中文名</th><th>密码</th><th>邮箱</th><th>手机</th>
+    <th>角色</th><th>状态</th><th>创建时间</th><th>最后登录时间</th><th>操作</th>
+</tr>
+    {% for users in userinfo %}
+<tr>
+    <td>{{users.id}}</td><td>{{users['name']}}</td><td>{{users['name_cn']}}</td><td>{{users['password']}}</td>
+    <td>{{users['email']}}</td><td>{{users['mobile']}}</td><td>{{users['role']}}</td><td>{{users['status']}}</td>
+    <td>{{users['create_time']}}</td><td>{{users['last_time']}}</td>
+    <td><input name="del_name" type="radio" value={{users['name']}}>删除
+	</td>
+</tr>
+    {%endfor%}
+</table>
+    <input type='submit' value='执行选中的操作'>
+</form>
+<hr/>
+<br/>
+<h3>用户信息更新</h3>
+<form method="POST" action="/updateuser">
+<table border='1'>
+<tr> 
+    <th>ID</th><th>用户名</th><th>中文名</th><th>密码</th><th>邮箱</th><th>手机</th>
+    <th>角色</th><th>状态</th><th>创建时间</th><th>最后登录时间</th><th>操作</th>
+</tr>
+    {% for users in userinfo %}
+<tr>
+    <td>{{users.id}}</td><td>{{users['name']}}</td><td>{{users['name_cn']}}</td><td>{{users['password']}}</td>
+    <td>{{users['email']}}</td><td>{{users['mobile']}}</td><td>{{users['role']}}</td><td>{{users['status']}}</td>
+    <td>{{users['create_time']}}</td><td>{{users['last_time']}}</td>
+    <td><input name="userid" type="radio" value={{users['id']}}>更新
+	</td>
+</tr>
+    {%endfor%}
+</table>
+    <input type='submit' value='执行选中的操作'>
+</form>
+<hr/>
+</div>
+</body>
+</html>

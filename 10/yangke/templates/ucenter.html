@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+个人中心
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-sm-4 col-sm-offset-3">
+        <table class="table">
+            <tr>
+                <td><h4>{{ info.username }}:</h4></td>
+                {% if info.role != "admin" %}
+                    <td><button class="btn btn-info btn-sm" data-id="{{ info.username }}" id="passwdbtn">修改密码</button></td>
+                {% else %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% for key,value in uinfo.items() %}
+            <tr>
+                {% if key == "id" %}
+                <td style="color: #1d9d74">ID</td>
+                {% elif key == "name" %}
+                <td style="color: #1d9d74">用户名</td>
+                {% elif key == "mobile" %}
+                <td style="color: #1d9d74">电话</td>
+                {% elif key == "name_cn" %}
+                <td style="color: #1d9d74">中文名</td>
+                {% elif key == "role" %}
+                <td style="color: #1d9d74">角色</td>
+                {% elif key == "email" %}
+                <td style="color: #1d9d74">邮箱</td>
+                {% endif %}
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div> <!--end col-4 -->
+
+<div class="modal fade" id="passwdModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">修改密码</h4>
+      </div>
+      <form id="passwdForm" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+      <div class="modal-body">
+            <input type="hidden" name="name" id="name">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">原始密码<span class="red-fonts">*</span></label>
+                <div class="col-sm-8">
+                    <input id="password" name="password" type="password" class="form-control">
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">新密码<span class="red-fonts">*</span></label>
+                <div class="col-sm-8">
+                    <input id="new_password" name="new_password" type="password" class="form-control">
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认密码<span class="red-fonts">*</span></label>
+                <div class="col-sm-8">
+                    <input id="re_password" name="re_password" type="password" class="form-control">
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-sm-6 red-fonts" id="errmsg"></div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="btn-identi">确认</button>
+      </div>
+       </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+</div> <!--end row-->
+
+    <script>
+    $("#passwdbtn").click(function () {
+        $("#passwdModal").modal("show")
+        var username=$(this).attr("data-id")
+        $("#name").val(username)
+    })
+
+    $("#btn-identi").click(function () {
+        $.post("/modfpasswd",$("#passwdForm").serialize(),function (data) {
+            console.log(data)
+            data=JSON.parse(data)
+            if(data["code"] == 1){
+                $("#errmsg").text(data["errmsg"])
+            }else{
+                alert(data["result"])
+                location.reload()
+            }
+{#            data = JSON.parse(data)#}
+{#            if(data["code" == 1]){#}
+{#                $("#errmsg").text(data["errmsg"])#}
+{#            }else{#}
+{#                alert(data["result"])#}
+{#                location.reload()#}
+{#            }#}
+        })
+    })
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>POMS账号修改之前验证页面</title>
+<style>
+h1 {
+    position:fixed;
+    top:0px; left:0px;
+    width:100%;
+    color:#ffffff; background-color:#666666;
+    margin:0px;padding:10px;
+    height:60px;
+    z-index:2;}
+.widths{width:200px;}
+div.div_registered{   
+    position:absolute;
+    left:53%; /*向右移*/
+    top:50%; /*向下移*/
+    margin:-180px 0 0 -190px;
+}
+</style>
+
+</head>
+<body>
+<h1>POMS个人账户信息修改</h1>
+<div class="div_registered">
+<h3 style="text-align:center">个人信息修改</h3>
+<p>提示:请妥善处理您的个人信息，修改后牢记</p>
+<hr/><h3>密码修改</h3>
+<form method="POST" action="/userchange"> 
+    您的用户名:<input class="widths" type="text"  name="default_username"/>
+    <br/>
+    原始的密码:<input class="widths" type="password" name="default_password"/>
+    <br/>
+    设置新密码:<input class="widths" type="password" name="new_password"/>
+    <br/>
+    确认新密码:<input class="widths" type="password" name="repeat_password"/>
+    <br/> <input type="submit" value="提交" />
+</form>
+<hr/>
+<p>{{error}}</p>
+<p>{{change_complete}}</p>
+</div>
+</body>
+</html>

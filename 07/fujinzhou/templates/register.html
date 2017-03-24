@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加用户</title>
+<link href="" rel="stylesheet">
+</head>
+<body>
+<h4>添加用户</h4>
+<form action="/adduser" method="POST">
+    <p><input type="text" name="name" placeholder="用户名"></p>
+    <p><input type="text" name="name_cn" placeholder="中文名"></p>
+    <p><input type="password" name="password" placeholder="密码"></p>
+    <p><input type="password" name="re_password" placeholder="再次输入密码"></p>
+    <p><input type="text" name="email" placeholder="邮箱"></p>
+    <p><input type="text" name="mobile" placeholder="手机号"></p>
+    <p>角色:
+    <select name="role">
+        <option value="ops">ops</option>
+        <option value="php">php</option>
+        <option value="app">app</option>
+    </select></p>
+    <p>状态:
+    <select name="status">
+        <option value="0">激活</option>
+        <option value="1">锁定</option>
+    </select></p>
+    <p><input type="submit" value="添加用户"></p>
+</form>
+<div style="color:red">{{content}}</div>
+</body>
+</html>

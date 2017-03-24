@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+添加机柜
+{% endblock %}
+
+{% block main %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>填写服务器信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form id="serverForm" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">主机名</label>
+                            <div class="col-sm-8">
+                                <input id="hostname" name="hostname" placeholder="主机名" type="text" class="form-control" datatype="*">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">内网IP</label>
+                            <div class="col-sm-8">
+                                <input id="lan_ip" name="lan_ip" placeholder="内网IP" type="text" class="form-control" datatype="ip" errormsg="IP地址格式错误">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">外网IP</label>
+                            <div class="col-sm-8">
+                                <input id="wan_ip" name="wan_ip" placeholder="外网IP" type="text" class="form-control" datatype="ip" errormsg="IP地址格式错误">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属机柜</label>
+                            <div class="col-sm-8">
+                                <select multiple class="form-control" name="cabinet_id" id="cabinet_id">
+                                {% for key,value in cabinfo.items() %}
+                                    <option value="{{ key }}">{{ value }}</option>
+                                {% endfor %}
+                                </select>
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人</label>
+                            <div class="col-sm-8">
+                                <input id="op" name="op" placeholder="负责人" type="text" class="form-control" datatype="*">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系电话</label>
+                            <div class="col-sm-8">
+                                <input id="phone" name="phone" placeholder="联系电话" type="text" class="form-control" datatype="m" errormsg=""手机格式错误>
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white" type="reset">取消</button>
+                                <button id="submit_button" class="btn btn-primary">确认保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#serverForm").Validform({
+        tiptype:3,
+        datatype:{
+            "ip":/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/,
+        }
+    })
+
+    $("#submit_button").click(function () {
+        var demo=$("#serverForm").Validform()
+        if(demo.check()) {
+            $.post("/addserver", $("#serverForm").serialize(), function (data) {
+
+                data = JSON.parse(data)
+                if (data["code"] == 0) {
+                    swal({
+                        title: "服务器添加成功",
+                        text: data["result"],
+                        type: "success",
+                        confirmButtonText: "确定"
+                    }, function () {
+                        location.href = "/server"
+                    })
+                } else {
+                    swal("服务器添加错误", data["errmsg"], "error")
+                }
+            })
+            return false
+        }
+    })
+</script>
+{% endblock %}

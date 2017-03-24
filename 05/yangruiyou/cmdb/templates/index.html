@@ -1,0 +1,21 @@
+<table>
+
+    <thead>
+    <tr>
+        <td>用户名
+        </td>
+        <td>中文名</td>
+        <td>手机号码</td>
+        <td>邮箱</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% if users %}
+    {% for user in users %}
+
+    <tr>
+        <td>{{ user[0] }}</td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>

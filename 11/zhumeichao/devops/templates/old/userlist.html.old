@@ -1,0 +1,60 @@
+<p><b>--用户管理页面--
+<form action="/oneuser">
+  <b>用户名：<input type='text' name='user'><input type='submit' value="查找用户">
+</form>
+<b><a href='/register'>创建用户</a>
+<b><a href="/logout">退出</a> 
+
+<table border='2'>
+    <thead>
+        <tr>
+	    <td>ID</td>
+	    <td>用户名</td>
+	    <td>中文名</td>
+	    <td>邮箱</td>
+	    <td>手机号</td>
+	    <td>角色</td>
+	    <td>状态</td>
+	    <td>创建时间</td>
+	    <td>修改时间</td>
+	    <td>操作</td>
+        </tr>
+    </thead>
+    <tbody>
+      {% if user %}
+	<tr>
+	    <td>{{user["id"]}}</td>
+	    <td>{{user["name"]}}</td>
+	    <td>{{user["name_cn"]}}</td>
+	    <td>{{user["email"]}}</td>
+	    <td>{{user["mobile"]}}</td>
+	    <td>{{user["role"]}}</td>
+	    <td>{{user["status"]}}</td>
+	    <td>{{user["create_time"]}}</td>
+	    <td>{{user["last_time"]}}</td>
+	    <td> <a href='/update?id={{user["id"]}}'><input type="button" value="更新"></a>
+                 <a href='/modpasswd?id={{user["id"]}}'><input type="button" value="修改密码"></a>
+                 <a href='/deluser?id={{user["id"]}}'><input type="button" value="删除"></a></td>
+	</tr>
+      {%endif%}
+      {% if users %}
+      {% for user in users %}
+	<tr>
+	    <td>{{user[0]}}</td>
+	    <td>{{user[1]}}</td>
+	    <td>{{user[2]}}</td>
+	    <td>{{user[3]}}</td>
+	    <td>{{user[4]}}</td>
+	    <td>{{user[5]}}</td>
+	    <td>{{user[6]}}</td>
+	    <td>{{user[7]}}</td>
+	    <td>{{user[8]}}</td>
+	    <td> <a href='/update?id={{user[0]}}'><input type="button" value="更新"></a>
+                 <a href='/modpasswd?id={{user[0]}}'><input type="button" value="修改密码"></a>
+                 <a href='/deluser?id={{user[0]}}'><input type="button" value="删除"></a></td>
+	</tr>
+      {%endfor%}
+      {%endif%}
+    </tbody>
+</table>
+<p style="color:red">{{ result }}

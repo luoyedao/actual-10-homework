@@ -1,0 +1,56 @@
+
+<div>
+    {{username}} 欢迎登陆! <a href="/logout">退出</a>
+</div>
+    <p><a href="/adduser">添加用户</a></p>
+
+<hr>
+    用户列表:
+<table border='1'>
+    <thead>
+        <tr>
+	    <td>用户名</td>
+	    <td>中文名</td>
+	    <td>邮箱</td>
+	    <td>手机号</td>
+        <td>角色</td>
+        <td>状态</td>
+	    <td>操作</td>
+        </tr>
+    </thead>
+
+    <tbody>
+      {% if users %}
+	<tr>
+	    <td>{{users['name']}}</td>
+	    <td>{{users.name_cn}}</td>
+	    <td>{{users.email}}</td>
+	    <td>{{users.mobile}}</td>
+        <td>{{users.role}}</td>
+        {% if users.status == "0" %}
+        <td>激活</td>
+        {% else %}
+        <td>锁定</td>
+        {% endif %}
+	    <td> 
+            <a href="/update?id={{ users.id }}"><button>更新</button></a>
+            <a href="/cgpassword?id={{ users.id }}"><button>修改密码</button></a>
+                </td>
+	</tr>
+      {%endif%}
+    </tbody>
+</table>
+<script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+function userdel(uid){
+    $.ajax({
+        type:"get",
+        url:"/delete",
+        data:{"uid":uid},
+        success:function(){
+            location.href="/";
+        }
+    })
+}
+
+</script>

@@ -1,0 +1,117 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>PomsServer | POMS运维管理系统</title>
+    <link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/static/css/animate.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet">
+
+</head>
+<body class=" pace-done">
+<div class="pace-activity"></div>
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">       
+<li class="nav-header">
+    <div class="dropdown profile-element">
+        <span>
+            <img alt="image" class="img-circle" width="48" height="48" src="/static/img/root.png">
+        </span>
+	<span class="text-muted text-xs block"><b>登录用户：{{name}}</b></span>
+	{% if role == 'user' %}
+		<span class="text-muted text-xs block"><b>角色：普通用户</b></span>
+	{% endif %}
+    </div>
+</li>
+
+            <li id="juser" class="">
+        	<a href="/user"><span class="nav-label">返回用户管理中心</span></a>
+                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                </ul>
+            </li>
+
+        </ul>
+
+    </div>
+</nav>
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                
+
+<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <li>
+            <h2><span class="m-r-sm text-muted welcome-message"><b>欢迎使用POMS运维管理系统</b></span></h2>
+        </li>
+    </div>
+</nav>
+</div>
+            
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-10">
+    </div>
+    <div class="col-sm-2">
+    </div>
+</div>
+
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h3> <b>更新用户信息</b> </h3>
+                </div>
+                <div class="ibox-content">
+		<form id="updateForm">
+  		<input type="hidden" value={{user.id}} name="id" />
+		<p><b>用户名：{{user.name}}</b></p>
+		<p><b>姓名：{{user.name_cn}}</b></p>
+		{% if user.role == 'admin' %}
+			<p><b>角色：管理员</b></p>
+		{% elif user.role == 'user' %}
+			<p><b>角色：普通用户</b></p>
+		{% endif %}
+		{% if user.status == 1 %}
+			<p><b>状态：正常</b></p>
+		{% elif user.status == 0 %}
+			<p><b>状态：锁定</b></p>
+		{% endif %}
+  		<p><span class="btn btn-xs btn-info">邮箱:</span> <input id="email" type="text" value={{user.email}} name="email" /></p>
+  		<p><span class="btn btn-xs btn-info">手机:</span> <input id="mobile" type="text" value={{user.mobile}} name="mobile" /></p>
+  			<p><input id="submits" type="submit" class="btn btn-xs btn-warning email" value="提交更新" />
+  			</p>
+			</form>
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+<div class="dataTables_paginate paging_simple_numbers" id="editable_paginate">
+</div>
+
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#submits').on('click',function(){
+	var str = $('#updateForm').serialize()
+	$.post("/user/update",str,function(data){
+		data = JSON.parse(data)
+		console.log(data)
+		if (data['code'] == 0){
+		    alert(data['errmsg'])
+		    location.href="/user"
+		}
+	})
+		return false
+})
+</script>
+
+</body>
+
+</html>

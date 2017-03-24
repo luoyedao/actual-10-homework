@@ -1,0 +1,26 @@
+<table border='1'>
+    <thead>
+      <tr>
+          <td>用户名</td>
+          <td>中文名</td>
+          <td>密码</td>
+          <td>邮箱</td>
+          <td>手机号</td>
+          <td>创建时间</td>
+          <td>操作</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% if user %}
+      <tr>
+          <td>{{user.name}}</td>
+          <td>{{user.name_cn}}</td>
+          <td>{{user.password}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.mobile}}</td>
+          <td>{{user.create_time}}</td>
+          <td><form action='/updateone'><input style="display:none" type='text' name='userid' value='{{user.id}}'><input type='submit' name='update' value='更新'></form>
+      </tr>
+      {%endif%}
+    </tbody>
+</table>

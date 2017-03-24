@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flasked</title>
+</head>
+<body>
+
+
+
+<form action="/adduser">
+    username: <input type="text" name="username">
+    password: <input type="password" name="password">
+    <input type="submit" value="注册">
+</form>
+
+<hr style="height:10px;border:none;border-top:2px solid #555555;" />
+
+<form action="/deluser">
+    username: <input type="text" name="username">
+    <input type="submit" value="删除">
+</form>
+
+<hr style="height:10px;border:none;border-top:2px solid #555555;" />
+
+<table border="1">
+    <thead>
+        <tr>
+            <td> username </td>
+            <td> password </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for k,v in d.iteritems() %}
+            <tr>
+                <td>{{ k }}</td>
+                <td>{{ v }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+</body>
+</html>

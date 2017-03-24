@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>POMS账号更新页面</title>
+<style>
+h1 {
+  position:fixed;
+  top:0px; left:0px;
+  width:100%;
+  color:#ffffff; background-color:#666666;
+  margin:0px;padding:10px;
+  height:60px;
+  z-index:2;}
+
+.widths{
+	width:200px;
+	}
+	
+div.div_registered{   
+	position:absolute;
+    left:33%; /*向右移*/
+    top:50%; /*向下移*/
+	margin:-180px 0 0 -190px;
+}
+</style>
+
+</head>
+<body>
+<h1>POMS账户更新</h1>
+<div class="div_registered">
+<h2 style="text-align:center">您的当前信息</h2>
+<hr />
+<table border='1'>
+<tr>
+<th>ID</th><th>用户名</th><th>中文名</th><th>密码</th><th>邮箱</th><th>手机</th><th>角色</th><th>状态</th><th>创建时间</th><th>最后登录时间</th>
+</tr>
+<tr>
+<td>{{queryinfo.id}}</td><td>{{queryinfo['name']}}</td><td>{{queryinfo['name_cn']}}</td><td>{{queryinfo['password']}}</td><td>{{queryinfo['email']}}</td><td>{{queryinfo['mobile']}}</td><td>{{queryinfo['role']}}</td>
+<td>{{queryinfo['status']}}</td><td>{{queryinfo['create_time']}}</td><td>{{queryinfo['last_time']}}</td>
+</tr>		
+</table>
+<hr />
+<br/>
+<h2>用户数据更新</h2>
+<hr />
+<form method="POST" action="/updateuser">
+输入您当前ID:<input class="widths" type="text" name="get_userid"> <br/>
+定义新账号名:<input class="widths" type="text" name="reg_name"> <br/>
+定义新中文名:<input class="widths" type="text" name="reg_name_cn"> <br/>
+设置新的密码:<input class="widths" type="password" name="reg_password"> <br/>
+确认新的密码:<input class="widths" type="password" name="repeat_password"> <br/>
+定义新的邮箱:<input class="widths" type="text" name="reg_email"> <br/>
+定义新手机号:<input class="widths" type="text" name="reg_mobile"> <br/>
+<label>您的角色:</label>
+	<select name="reg_role" id="reg_role">
+	    <option value="admin">管理员</option>
+	    <option value="user">普通用户</option>
+	</select>
+<br/>
+<input type="submit" value="提交修改" /><input type="reset" value="重置" />
+</form>
+<hr />
+<p>{{info}}</p>
+</hr>
+<p>管理员页面:<a href="/admin">Go</a></p>
+</div>
+
+</body>
+</html>

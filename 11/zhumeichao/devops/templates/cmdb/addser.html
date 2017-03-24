@@ -1,0 +1,55 @@
+<div class="wrapper wrapper-content animated fadeInRight"><!--添加服务器-->
+    <div class="row">
+        <div class="col-sm-12">
+                <form action="" class="form-horizontal nice-validator n-yellow" id="addForm" method="post" novalidate="novalidate">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="name">主机名<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="主机名" name="name" aria-required="true" data-tip="主机名">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="lan_ip">带内IP<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="带内IP" name="lan_ip" aria-required="true" data-tip="带内IP">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="wan_ip">带外IP<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="带外IP" name="wan_ip" aria-required="true" data-tip="带外IP">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="cabinet_name">所在机柜</label>
+                        <div class="col-sm-8">
+			    <select id="getting-single" name="cabinet_name">
+				{% for cab in cabname %}
+    				<option value="{{cab[0]}}">{{ cab[0] }}</option>
+				{% endfor %}
+			    </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="op">运维负责人<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="运维负责人" name="op" aria-required="true" data-tip="运维负责人">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="phone">联系电话<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="联系电话" name="phone" aria-required="true" data-tip="联系电话">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+		</form>
+        </div>
+    </div>
+</div><!--添加服务器-->
+</table><p id="result" style="color:red">{{ result }}</p>

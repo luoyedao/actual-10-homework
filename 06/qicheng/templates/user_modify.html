@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>用户修改</title>
+    </head>
+    <body>
+        <form action="/user/update/" method="post">
+            <span style="color:red;">{{error}}</span>
+            <input type="hidden" name="id" password="{{uid}}" />
+            用户名: <input type="text" name="name" password="{{name}}" />
+            密码: <input type="text" name="password" password="{{password}}" />
+            <input type="submit" password="修改" />
+        </form>
+    </body>
+</html>

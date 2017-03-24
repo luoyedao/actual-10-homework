@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{% block breadcrumb %} 
+用户列表
+{% endblock %}
+{% block main %} 
+
+<div class="col-sm-12">
+<a href="/add" class='btn btn-sm btn-primary'>添加用户</a>
+<table class="table table-striped table-bordered table-hover " id="editable">
+<thead>
+    <tr>
+        <th class="text-center">用户名</th>
+        <th class="text-center">姓名</th>
+        <th class="text-center">密码</th>
+        <th class="text-center">手机号</th>
+        <th class="text-center">邮箱</th>
+        <th class="text-center">角色</th>
+        <th class="text-center">状态</th>
+        <th class="text-center">操作</th>
+    </tr>
+</thead>
+<tbody>
+   {% if users %}
+   {% for user in users %}
+        <tr class="gradeX">
+                <td class="text-center">{{user.name}}</td>
+                <td class="text-center">{{user.name_cn}}</td>
+                <td class="text-center">{{user.password}}</td>
+                <td class="text-center">{{user.mobile}}</td>
+                <td class="text-center">{{user.email}}</td>
+                {% if user.role == "admin" %}
+                    <td class="text-center">管理员</td>
+                {% else %}
+                    <td class="text-center">普通用户</td>
+                {% endif %}
+
+                {% if user.status == 0 %}
+                    <td class="text-center" style="color:green">正常</td>
+                {% else%}
+                    <td class="text-center" style="color:red">锁定</td>
+                {% endif %}
+
+                <td class="text-center">
+                    <button data-name="{{user.name}}" class="btn btn-xs btn-info update">编辑</button>
+		    {% if role == "admin" %}
+                    <button data-id="{{user.id}}" class="btn btn-xs btn-danger del ">删除</button>
+		    {% endif %}
+                    <button data-name="{{user.name}}"  data-id="{{user.id}}" class="btn btn-xs btn-primary modpwd ">修改密码</button>
+                </td>
+            </td>
+         </tr>
+    {% endfor %}
+    {% endif %}
+</tbody>
+</table>
+
+</div> <!--col-sm-12-->
+<div class="modal fade" id='updateModel'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<h4 class="modal-title">更新</h4>
+      </div>
+      <div class="modal-body">
+	<form method="post" id="updateForm" class="form-horizontal">
+	    <div>
+		<input id='id' type='hidden' name='id' readonly='true' >
+	    </div><!-- id -->
+
+	    <div class='form-group'>
+		<label for="name" class="col-sm-2 control-label">用户名<span class="red-fonts">*</span></label>
+		<div class="col-sm-8">
+		    <input id="name" name="name" placeholder="Username" type="text" class="form-control" readonly>
+		</div>
+	    </div>
+	    <div class="hr-line-dashed"></div>
+	    <div class='form-group'>
+		<label for="name_cn" class="col-sm-2 control-label">中文名</label>
+		<div class="col-sm-8">
+		    <input id="name_cn" name="name_cn" placeholder="Chinese_name" type="text" class="form-control">
+		</div>
+	    </div>
+	    <div class="hr-line-dashed"></div>
+	    <div class='form-group'>
+		<label for="mobile" class="col-sm-2 control-label">手机号</label>
+		<div class="col-sm-8">
+		    <input id="mobile" name="mobile" placeholder="Mobile" type="text" class="form-control">
+		</div>
+	    </div>
+	    <div class="hr-line-dashed"></div>
+	    <div class='form-group'>
+		<label for="email" class="col-sm-2 control-label">邮箱号</label>
+		<div class="col-sm-8">
+		    <input id="email" name="email" placeholder="Email" type="text" class="form-control">
+		</div>
+	    </div>
+	    <div class="hr-line-dashed"></div>
+	    <div id='role_div' class="form-group">
+		<label for="role" class="col-sm-2 control-label">角色</label>
+		<div class="col-sm-8">
+		    <select id="role" name="role" class="form-control m-b" multiple size="4">
+			
+			    
+				<option value="admin" selected>管理员</option>
+				<option value ="user" selected>普通用户</option>
+			    
+			
+		    </select>
+		</div>
+	    </div>
+	    <div class="hr-line-dashed"></div>
+	    <div id='status_div' class="form-group">
+		<label for="status" class="col-sm-2 control-label">状态</label>
+		<div class="col-sm-8">
+		    <select id="status" name="status" class="form-control m-b" multiple size="4">
+			
+			    
+				<option value=0 selected>正常</option> 
+				<option value=1 selected>锁定</option>
+			    
+			
+		    </select>
+		</div>
+	    </div>
+	</form>
+      </div>
+      <div class="modal-footer">
+	<button type="button" class="btn btn-default update-cancel" data-dismiss="modal">取消</button>
+	<button type="button" class="btn btn-primary update-sure" data-name=''>确认</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</div> <!--col-sm-12-->
+<div class="modal fade" id='deleteModel'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<h4 class="modal-title">删除</h4>
+      </div>
+      <div class="modal-body">
+	<p>确认删除?</p>
+      </div>
+      <div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>                                                                         
+	<button type="button" class="btn btn-primary del-sure" data-id=''>确认</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id='modpwdModel'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<h4 class="modal-title">修改密码</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" id="modpwdForm" class="form-horizontal">
+	    <div>
+		<input id='mod-id' type='hidden' name='id' data-id=''  readonly='true' >
+	    </div>
+
+	    <div class='form-group'>
+		<label for="name" class="col-sm-2 control-label">用户名<span class="red-fonts">*</span></label>
+		<div class="col-sm-8">
+		    <input id="mod-name" name="name" placeholder="Username" type="text" class="form-control" readonly>
+		</div>
+	    </div>
+	    {% if role != 'admin' %}
+	    <div class="hr-line-dashed"></div>
+	    <div id='password_div' class="form-group">
+		<label for="password" class="col-sm-2 control-label">旧密码<span class="red-fonts">*</span></label>
+		<div class="col-sm-8">
+		    <input id="mod-password" name="password" placeholder="Password" type="password" class="form-control">
+		</div>
+	    </div>
+	    {% endif %}
+	    <div class="hr-line-dashed"></div>
+	    <div class="form-group">
+		<label for="newpassword" class="col-sm-2 control-label">新密码<span class="red-fonts">*</span></label>
+		<div class="col-sm-8">
+		    <input id="mod-newpassword" name="newpassword" placeholder="Newpassword" type="password" class="form-control">
+		</div>
+	    </div>
+	    <div class="hr-line-dashed"></div>
+	    <div class="form-group">
+		<label for="renewpassword" class="col-sm-2 control-label">再次输入<span class="red-fonts">*</span></label>
+		<div class="col-sm-8">
+		    <input id="mod-renewpassword" name="renewpassword" placeholder="Input again" type="password" class="form-control">
+		</div>
+	    </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-8" id='errmsg' style='color:red'></div>
+	<div class="col-md-4"><button type="button" class="btn btn-default modpwd-cancel" data-dismiss="modal">取消</button>
+	<button type="button" class="btn btn-primary modpwd-sure" data-id=''>确认</button></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+
+$('.update').click(function(){
+    var name=$(this).attr('data-name')
+    var url = "/update_msg?name="+name
+    $.getJSON(url,function(data){
+	if (data['code'] == 0){
+	    user = data['result']
+	    $('#id').val(user['id'])
+	    $('#name').val(user['name'])
+	    $('#name_cn').val(user['name_cn'])
+	    $('#mobile').val(user['mobile'])
+	    $('#email').val(user['email'])
+	    $('#role').val(user['role'])
+	    $('#status').val(user['status'])
+	}else if (data['code'] == 2){
+	    user = data['result']
+	    $('#id').val(user['id']).hide()
+	    $('#name').val(user['name'])
+	    $('#name_cn').val(user['name_cn'])
+	    $('#mobile').val(user['mobile'])
+	    $('#email').val(user['email'])
+	    $('#role_div').hide()
+	    $('#status_div').hide()
+	}else{
+	    $('#errmsg').html('fail')
+	}
+    })
+    $('#updateModel').modal('show')
+})
+
+$('.update-sure').click(function(){
+    var str=$('#updateForm').serialize()
+    $.post('/update',str,function(data){
+	data=JSON.parse(data)
+	if (data['code'] == 0){
+	    swal('Congratulation',data['result'],'success')
+	    $('.confirm').click(function(){
+	        location.href='/userlist'
+	    })
+	}else{
+	    swal('Error',data['errmsg'],'error')
+	}
+    })
+    return false
+})
+
+$('.del').click(function(){
+    var id=$(this).attr('data-id')
+    $('.del-sure').attr('data-id',id)
+    $('#deleteModel').modal('show')
+    
+})
+
+$('.del-sure').click(function(){
+    var id=$(this).attr('data-id')
+    var str="id="+id
+    $.post('/delete',str,function(data){
+	swal('Congratulation','delete success!','success')
+	//location.href='/userlist'
+	$('.confirm').click(function(){
+	    location.href='/userlist'
+	})
+    })
+})
+
+
+$('.modpwd').click(function(){
+    var id=$(this).attr('data-id')
+    var name=$(this).attr('data-name')
+    $('#mod-id').val(id)
+    $('#mod-name').val(name)
+    $('#modpwdModel').modal('show')
+})
+
+$('.modpwd-cancel').click(function(){
+    location.reload()
+})
+
+$('.modpwd-sure').click(function(){
+    var str=$('#modpwdForm').serialize()
+    $.post('/modpwd',str,function(data){
+	data=JSON.parse(data)
+	if (data['code'] == 0){
+	    swal('Congratulation',data['result'],'success')
+	    //location.href='/userlist'
+	    $('.confirm').click(function(){
+	        location.href='/userlist'
+	    })
+	}else{
+	    swal('Error',data['errmsg'],'error')
+	}
+    })
+    return false
+})
+
+</script>
+{% endblock %}
+
+

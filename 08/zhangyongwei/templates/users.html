@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}用户列表{% endblock %}
+{% block session_user %}{{ session.user }}{% endblock %}
+
+
+{% block main %}
+    <div class="col-md-10 col-md-offset-2 right">
+        <ol class="breadcrumb">
+          <li><a href="/users/">Home</a></li>
+          <li class="active">用户管理</li>
+        </ol>
+
+    {% if session.user != 'admin' %}
+        <a href="/users/regedit/"><button type="button" class="btn btn-primary" disabled="disabled">添加用户</button></a>
+    {% else %}
+        <a href="/users/regedit/"><button type="button" class="btn btn-primary">添加用户</button></a>
+    {% endif %}
+        <a href="/logout/"><button type="button" class="btn btn-default">退出登录</button></a>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <th>id</th>
+                <th>用户名</th>
+                <th>中文名</th>
+                <th>密码</th>
+                <th>邮箱</th>
+                <th>手机</th>
+                <th>角色</th>
+                <th>账号状态</th>
+                <th>账号创建时间</th>
+                <th>最后登录时间</th>
+                <th>操作</th>
+            </thead>
+            {% for user in users %}
+            <tbody>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.name_cn }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.mobile }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.status }}</td>
+                <td>{{ user.create_time }}</td>
+                <td>{{ user.last_time }}</td>
+                {% if session.user == 'admin' and user.name == 'admin' %}
+                <td>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-id={{ user.id }} data-url="/users/update?id={{ user.id }}" data-target="#dialog">更新</button>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <button id="delete" type="button" class="btn btn-info" onclick="deluser({{ user.id }})" disabled="disabled">删除</button>
+                </td>
+                {% elif session.user == 'admin' and user.name != 'admin' %}
+                <td>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-id={{ user.id }} data-url="/users/update?id={{ user.id }}" data-target="#dialog">更新</button>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <button id="delete" type="button" class="btn btn-info" onclick="userdel({{ user.id }})">删除</button>
+                </td>
+                {% elif session.user == user.name %}
+                <td>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-id={{ user.id }} data-url="/users/update?id={{ user.id }}" data-target="#dialog">更新</button>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <button id="delete" type="button" class="btn btn-info" onclick="userdel({{ user.id }})" disabled="disabled">删除</button>
+                </td>
+                {% else %}
+                <td>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-id={{ user.id }} data-url="/users/update?id={{ user.id }}" data-target="#dialog" disabled="disabled">更新</button>
+                    <a href="/users/change_pass?name={{ user.name }}"><button type="button" class="btn btn-info" disabled="disabled">修改密码</button></a>
+                    <!--<a id="delete" href="/users/delete?id={{ user.id }}">删除</a>-->
+                    <button id="delete" type="button" class="btn btn-info" onclick="userdel({{ user.id }})" disabled="disabled">删除</button>
+                </td>
+                {% endif %}
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+{% block dialog %}
+        <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="dialogLabel">
+          <div class="modal-dialog" style="width:700px;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="dialogLabel">更新用户</h4>
+              </div>
+              <div class="modal-body" style="max-height: 400px; overflow-y: auto">
+                this is modal-body
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary btn-form-submit" id="update">更新</button>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    function userdel(id) {
+        $.get('/users/delete/', {"id": id}, function (result) {
+            window.location.href = '/users/';
+        })
+    }
+jQuery(document).ready(function () {
+
+    $('#dialog').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var url = button.data('url');
+        $(this).find(".modal-body").load(url);
+
+        $("#update").click(function () {
+            var data = $("#updateForm").serialize();
+            $.post('/users/update/', data, function(result){
+                var result = JSON.parse(result)
+                if(result['status']==0){
+                    window.location.href='/users/';
+                }
+            })
+        })
+    });
+})
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>POMS账号注册成功</title>
+<style>
+h1 {
+  position:fixed;
+  top:0px; left:0px;
+  width:100%;
+  color:#ffffff; background-color:#666666;
+  margin:0px;padding:10px;
+  height:60px;
+  z-index:2;}
+
+.widths{
+	width:200px;
+	}
+	
+div.div_registered{   
+	position:absolute;
+    left:40%; /*向右移*/
+    top:50%; /*向下移*/
+	margin:-180px 0 0 -190px;
+}
+</style>
+
+</head>
+<body>
+<h1>POMS账户注册成功</h1>
+<div class="div_registered">
+<h3 style="text-align:center">您的个人信息</h3>
+<hr />
+<table border='1'>
+<tr>
+<th>用户名</th><th>中文名</th><th>密码</th><th>邮箱</th><th>手机</th><th>角色</th><th>状态</th><th>创建时间</th>
+</tr>
+<tr>
+</td><td>{{queryinfo['name']}}</td><td>{{queryinfo['name_cn']}}</td><td>{{queryinfo['password']}}</td><td>{{queryinfo['email']}}</td><td>{{queryinfo['mobile']}}</td><td>{{queryinfo['role']}}</td>
+<td>{{queryinfo['status']}}</td><td>{{queryinfo['create_time']}}</td>
+</tr>		
+</table>
+<hr />
+<p><em>提示：请牢记您的密码！</em></p>
+<p>GO!GO!去<a href="/"><em>登录</em></a></p>
+</div>
+</body>
+</html>

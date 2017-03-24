@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更新页面</title>
+</head>
+<body>
+    <p id="errmsg" style="color:red"></p>
+    <form id="updateForm" accept-charset="UTF-8">
+    <input id="id" type="hidden" name='id'>
+    <div>
+        <label>中文名:</label>
+        <input id="name_cn" type="text" name="name_cn">
+    </div>
+    <div>
+        <label>手机号:</label>
+        <input id="mobile" type="text" name="mobile">
+    </div>
+    <div>
+        <label>邮箱号:</label>
+        <input id="email" type="text" name="mobile">
+    </div>
+    {% if type=='admin' %}
+    <div>
+        <label>角色:</label>
+        <select name="role" id="role">
+            <option value="admin">管理员</option>
+            <option value="common">普通用户</option>
+        </select>
+    </div>
+    {% endif %}
+    <div>
+        <label>状态：</label>
+        <select name='status' id='status'>
+            <option value=0>正常</option>
+            <option value=1>锁定</option>
+        </select>
+    </div>
+    <div>
+        <button id="updatebtn" type="submit">更新信息</button>
+        <button>退出</button>
+    </div>
+    </form>
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+//通过ID获取数据渲染表单
+var id = {{uid}}
+var url = 'getbyid?id='+id
+$.getJSON(url,function(data){
+    console.log(data)
+    if (data['code']==0){
+        data = data['result'] //已经是getJSON了，这时候数据不需要再从str转成json
+        $('#id').val(data['id']) //开始渲染表单的值
+        $('#name').val(data['name'])
+        $('#name_cn').val(data['name_cn'])
+        $('#mobile').val(data['mobile'])
+        $('#email').val(data['email'])
+        $('#role').val(data['role'])
+        $('#status').val(data['status'])
+    }else{
+        $('#errmsg').html(data['errmsg'])
+    }
+})
+
+$('#updatebtn').click(function(){
+    var str = $('#updateForm').serialize()
+    console.log(str)
+    $.post('/update',str,function(data){
+        console.log(data)
+        data = JSON.parse(data)
+        console.log(data)
+        if (data['code']==0){
+            alert(data['result'])
+            location.href='/userlist'
+            {%if type%}
+                if (type=='admin'){
+                    location.href='/userlist'
+                }else{
+                    location.hash='/onelist'
+                }
+            {% endif %}
+        }else{
+            $('#errmsg').html(data['errmsg'])
+        }
+    })
+    return false
+})
+</script>
+</body>
+</html>

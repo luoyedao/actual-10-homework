@@ -1,0 +1,32 @@
+<meta charset="UTF-8">
+
+注册用户
+<form action="/useradd">
+	name:<input type='text' name='name'>
+	password:<input type='password' name='password'>
+	<input type='submit' value='submit' >
+</form>
+<hr>
+删除用户
+<form action='deluser'>
+	name:<input type='text' name='name'>
+	<input type='submit' value='submit'>
+</form>
+<hr>
+用户列表
+<table border='1'>
+	<thread>
+		<tr>
+		<td>Name</td>
+		<td>Password</td>
+		</tr>
+	</thread>
+	<tbody>
+		{% for k,v in names.items() %}
+		<tr>
+			<td>{{k}}</td>
+			<td>{{v}}</td>
+		</tr>
+		{%endfor%}
+	</tbody>
+</table>

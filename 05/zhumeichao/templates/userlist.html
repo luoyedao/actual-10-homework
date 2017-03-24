@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta content="text/html;charset=UTF-8"></meta>
+<style type="text/css">
+body {text-align:center;margin:100px 400px;font-family:arial;background-color:#F8F8F8}
+</style>
+</head>
+<body>
+
+<form action="/userinfo">
+	<input type="text" name="username" size="30" style="border-style:solid;border-width:2px;">
+	<input type="submit" name="look" value="查询用户"
+	style="width:100px;height:25px;font-family:arial;font-size:20px;border:0px solid;background:#69F;color:#FFF">
+</form>
+<form action="/delete">
+	<input type="text" name="delname" size="30" style="border-style:solid;border-width:2px;">
+	<input type="submit" name="delete" value="删除用户"
+	style="width:100px;height:25px;font-family:arial;font-size:20px;border:0px solid;background:#69F;color:#FFF">
+</form>
+<a href="/">返回登录</a>
+<table border="1">
+	<thead>
+		<tr>
+		<td>Name</td>
+		<td>Passwd</td>
+		</tr>
+	</thead>
+  	<tbody>
+		{% for k,v in users.items() %}
+		{% if k and v %}
+		<tr>
+			<td>{{k}}</td>
+			<td>{{v}}</td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+	</tbody>
+</table>
+</body>
+</html>

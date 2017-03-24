@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+添加机柜
+{% endblock %}
+
+{% block main %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>填写机柜信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form id="cabForm" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">机柜编号</label>
+                            <div class="col-sm-8">
+                                <input id="name" name="name" placeholder="机柜编号" type="text" class="form-control" datatype="*">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属机房</label>
+                            <div class="col-sm-8">
+                                <select multiple class="form-control" name="idc_id" id="idc_id">
+                                {% for key,value in idcinfo.items() %}
+                                    <option value="{{ key }}">{{ value }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">机柜U数</label>
+                            <div class="col-sm-8">
+                                <input id="u_num" name="u_num" placeholder="机柜U数" type="text" class="form-control" datatype="n" errormsg="必须为数字">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white" type="reset">取消</button>
+                                <button id="submit_button" class="btn btn-primary">确认保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#cabForm").Validform({
+        tiptype:3,
+    })
+
+    $("#submit_button").click(function () {
+        var demo=$("#cabForm").Validform()
+        if(demo.check()){
+            $.post("/addcabinet",$("#cabForm").serialize(),function (data) {
+                data=JSON.parse(data)
+                if(data["code"]==0){
+                    swal({
+                        title:"机柜添加成功",
+                        text:data["result"],
+                        type:"success",
+                        confirmButtonText:"确定"
+                        },function () {
+                            location.href="/cabinet"
+                    })
+                }else{
+                    swal("机柜添加错误","机柜添加错误","error")
+                }
+            })
+            return false
+        }
+    })
+</script>
+{% endblock %}

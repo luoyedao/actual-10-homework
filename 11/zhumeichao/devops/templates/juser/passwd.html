@@ -1,0 +1,65 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>忘记密码</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/animate.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="/static/plugin/Font-Awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/plugin/sweetalert-master/dist/sweetalert.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/plugin/sweetalert-master/dist/sweetalert.min.js"></script>
+<style type="text/css"></style>
+</head>
+<body class="gray-bg">
+    <div class="lock-word animated fadeInDown">
+        <span class="first-word ">McCoy  Server</span>
+    </div>
+    <div class="middle-box text-center lockscreen animated fadeInDown">
+            <h3>修改密码</h3>
+	    <form class="m-t" role="form" method="post" action="" id="modForm">
+		{% if user %}
+                <div class="form-group">
+                    <input type="hidden" class="form-control" name="id" value="{{user.id}}" >
+                </div>
+                <div class="form-group">
+                    <input type="hidden" class="form-control" name="name" value="{{user.name}}">
+                </div>
+                <div class="form-group">
+                    <input type="password" required="" placeholder="新密码" class="form-control" name="nepasswd">
+                </div>
+                <div class="form-group">
+                    <input type="password" required="" placeholder="确认密码" class="form-control" name="repasswd">
+                </div>
+                <button class="btn btn-primary block full-width" type="submit" id="modbtn">确定</button>
+		{% endif %}
+	    </form><p id="result" style="color:red">{{ result }}</p>
+                <a href="/userinfo"><button class="btn btn-primary block full-width" type="button">返回</button></a>
+    </div>
+<script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#modbtn').click(function(){
+        var formdata = $('#modForm').serialize()
+        $.post("/modpasswd",formdata,function(data){
+		udata = JSON.parse(data)
+                if (udata['code']==0){
+                        //alert(udata['result'])
+			swal({
+                                title: "修改成功",
+                                type: "success",
+                                confirmButtonText: "确定"
+                        },function(){
+                                location.href="/userlist"
+                        });
+                }
+                else{
+                        //$('#result').html(udata['errmsg'])
+			swal("MY GOD",("修改失败"),"error");
+                }
+        })
+	return false
+})
+</script>
+
+</body>
+</html>

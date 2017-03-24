@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+#__author__ = 'Madon'
+
+# res= {
+#      '1':'登录',
+#     '2':'注册'
+#  }
+L=['登录','注册']
+def start():
+    # for key,val in res.items():
+    #     print key,val
+    # print '*'*30
+    for index,name in enumerate(L):
+        print index,'-',name
+
+def Please():
+    while True:
+        a = int(raw_input("Please number:").strip())
+        if  int(a) ==0:
+            #print "5"*10
+            denglv()
+            break
+        if int(a) ==1:
+            #print "4"*10
+            zhuce()
+            break
+def denglv():
+    while True:
+        name = raw_input("please you name:")
+        password = raw_input("please you password:")
+        if name == bianli_2()[0]:
+            print "登录成功"
+            break
+        else:
+            print "注册失败，用户不存在"
+            continue
+def zhuce():
+    fo =open("test.log","a+")
+    name = raw_input("please you name:")
+    password = raw_input("please you password:")
+    while True:
+        if name == bianli():
+            print "注册失败"
+            break
+        else:
+            fo.write("%s:%s\n" % (name,password))
+            print "注册成功"
+            break
+    fo.close()
+def bianli():
+    fo =open("test.log")
+    countent = fo.readlines()
+    for line in countent:
+        line = line.split(":")[0]
+        for i in line:
+            return i[0]
+        return line
+        #print line
+def bianli_2():
+    fo = open("test.log")
+    countent = fo.readlines()
+    for i in countent:
+        return i[0],i[2]
+        #print i[0],i[2]
+    #return countent
+    #print countent[1]
+def start_operate():
+    start()
+    Please()
+start_operate()

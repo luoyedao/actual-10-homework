@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 登录 | PomsServer</title>
+    <link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/css/animate.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name"><img src="/static/img/logo.png"></h1>
+            </div>
+            
+            <h2>Welcome to POMS</h2>
+            
+            <form id="loginForm" class="m-t" role="form">
+                <div class="form-group">
+                    <input id="name" type="text" name="name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input id="password" type="password" name="password" class="form-control" >
+                </div>
+                <button id="loginbtn" type="submit" class="btn btn-primary block full-width m-b">Login</button>
+            </form>
+            <p style="color:red" id="errmsg">{{info}}</p>
+            <p class="m-t"> <small><b>Copyright</b> POMS Organization © 2015-2016</small> </p>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/static/js/jquery-2.1.1.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#loginbtn').on('click',function(){
+	var str = $('#loginForm').serialize()
+	$.post("/login",str,function(data){
+		data = JSON.parse(data)
+		console.log(data)
+		if (data['code'] == 0){
+			if (data['roles'] == 'admin'){
+			    location.href="/admin"
+			}else{ 
+			    location.href="/user"
+			}
+			    
+	
+		}else{
+		    $('#errmsg').html(data['errmsg'])
+		}
+	})
+		return false
+})
+</script>
+    
+    
+
+</body>
+
+</html>
+

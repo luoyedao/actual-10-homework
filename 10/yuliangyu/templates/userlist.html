@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block breadcrumb %} 
+用户列表
+{% endblock %}
+{% block main %} 
+
+<div class="col-sm-12">
+<a href="/add" class="btn btn-sm btn-primary "> 添加用户</a> 
+<table class="table table-striped table-bordered table-hover " id="editable">
+<thead>
+    <tr>
+        <th class="text-center">用户名</th>
+        <th class="text-center">姓名</th>
+        <th class="text-center">角色</th>
+        <th class="text-center">状态</th>
+        <th class="text-center">操作</th>
+    </tr>
+</thead>
+<tbody>
+   {% for user in users %}
+        <tr class="gradeX">
+                <td class="text-center"><a href="/userinfo?id={{user.id}}">{{user.name}}</a></td>
+                <td class="text-center">{{user.name_cn}}</td>
+                {% if user.role == "admin" %}
+                    <td class="text-center">超级管理员</td>
+                {% else %}
+                    <td class="text-center">管理员</td>
+                {% endif %}
+
+                {% if user.status == 0 %}
+                    <td class="text-center" style="color:green">正常</td>
+                {% else%}
+                    <td class="text-center" style="color:red">锁定</td>
+                {% endif %}
+
+                <td class="text-center">
+                    <button data-id="{{user.id}}" class="btn btn-xs btn-info">编辑</button>
+                    <button data-id="{{user.id}}" class="btn btn-xs btn-danger del ">删除</button>
+                </td>
+            </td>
+         </tr>
+    {% endfor %}
+ </tbody>
+</table>
+
+<div class="modal fade" id="updateModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">更新用户信息</h4>
+      </div>
+      <div class="modal-body">
+			<form id="userForm" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+			    <input type="hidden" id='id' name="id" >
+                            <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label  ">用户名<span class="red-fonts ">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="name" name="name" placeholder="Username" type="text" class="form-control" aria-required="true" data-tip="输入用户名">
+                                 </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">姓名<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="name_cn" name="name_cn" placeholder="Name" type="text" class="form-control" aria-required="true" data-tip="姓名">
+                                 </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">密码<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="password" name="password" placeholder="Password" type="password" class="form-control" aria-required="true" data-tip="密码">
+                                 </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="mobile" class="col-sm-2 control-label">手机号</label>
+                                <div class="col-sm-8">
+                                    <input id="mobile" name="mobile" placeholder="Mobile" type="text" class="form-control" aria-required="true" data-tip="手机号">
+                                 </div>
+                            </div>
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="role" class="col-sm-2 control-label">权限<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    
+                                    <div class="col-sm-3">
+                                        <div class="radio i-checks">
+                                            <label><input type="radio" value="CU" class="role" name="role" checked="">普通用户</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-3">
+                                        <div class="radio i-checks">
+                                            <label><input type="radio" value="SU" class="role" name="role">超级管理员</label>
+                                        </div>
+                                    </div>
+                                    
+                                 </div>
+                            </div>
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="email" class="col-sm-2 control-label">Email<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="email" name="email" type="email" placeholder="username@jumpserver.org" class="form-control" aria-required="true" data-tip="Email">
+                                </div>
+                            </div>
+
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">状态</label>
+                                    <div class="col-sm-3">
+                                        <div class="radio i-checks">
+                                            <label><input type="radio" value="0" name="status" checked="">启用</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-3">
+                                        <div class="radio i-checks">
+                                            <label><input type="radio" value="1" name="status">禁用</label>
+                                        </div>
+                                    </div>
+
+                            </div>
+                            <div style="color:red" class="text-center" id="errmsg"></div>
+                        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="update_button"type="button" class="btn btn-primary update">确认</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$(".btn-info").click(function(){
+    $('#updateModal').modal('show')
+    var id = $(this).attr('data-id')
+    $.getJSON('/update',{id: id},function(data){
+	if (data['code'] == 0){
+	    console.log(data['result'])
+	    $('#id').val(data['result']['id'])
+	    $('#name').val(data['result']['name'])
+	    $('#name_cn').val(data['result']['name_cn'])
+	    $('#password').val(data['result']['password'])
+	    $('#email').val(data['result']['email'])
+	    $('#mobile').val(data['result']['mobile'])
+	}
+    })
+})
+</script>
+
+    <script>
+        $("#update_button").click(function(){
+            $.post("/update",$("#userForm").serialize(),function(data){
+                data=JSON.parse(data);
+                if(data["code"] == 0){
+                    location.href="/userlist";
+                }else{
+                    $("#errmsg").text(data["errmsg"]);
+                }
+            })
+            return false
+        })
+    </script>
+
+<script>
+    $('.del').click(function(){
+	var id = $(this).attr('data-id')
+	if(confirm('confirm delete?')){
+	    $.getJSON('/delete',{id:id},function(data){
+		if(data['code'] == 0){
+                    location.href="/userlist";
+		}else{
+		    $('#errmsg').text(data['errmsg']);
+		}
+	    })
+	    return false
+	}
+    })
+</script>
+
+</div> <!--col-sm-12-->
+{% endblock %}
+

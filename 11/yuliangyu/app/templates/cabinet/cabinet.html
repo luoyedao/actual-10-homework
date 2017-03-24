@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+机柜管理
+{% endblock %}
+
+{% block main %}
+<div class="col-sm-12">
+<a href="/addcabinet" class="btn btn-sm btn-primary "> 添加机柜</a> 
+<table class="table table-striped table-bordered table-hover " id="editable">
+<thead>
+    <tr>
+        <th class="text-center">机柜名</th>
+        <th class="text-center">所在机房</th>
+        <th class="text-center">U位</th>
+        <th class="text-center">电量</th>
+        <th class="text-center">操作</th>
+    </tr>
+</thead>
+<tbody>
+   {% for cabinet in cabinets %}
+        <tr class="gradeX">
+                <td class="text-center"><a href="/cabinetinfo?id={{cabinet.id}}">{{cabinet.name}}</a></td>
+                <td class="text-center">{{cabinet.idc_id}}</td>
+                <td class="text-center">{{cabinet.u_num}}</td>
+                <td class="text-center">{{cabinet.power}}</td>
+                <td class="text-center">
+<!--                    <button data-id="{{cabinet.id}}" class="btn btn-xs btn-info">编辑</button> -->
+	            <a href="/updatecab?id={{cabinet.id}}" class="btn btn-xs btn-info">编辑</a>
+                    <button data-id="{{cabinet.id}}" class="btn btn-xs btn-danger del ">删除</button>
+                </td>
+            </td>
+         </tr>
+    {% endfor %}
+ </tbody>
+</table>
+
+<!--
+<div class="modal fade" id="updateModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">更新机柜信息</h4>
+      </div>
+      <div class="modal-body">
+	                   <form id="updatecabForm" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+			    <input type="hidden" id='id' name="id" >
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label  ">机柜名<span class="red-fonts ">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="name" name="name" placeholder="cabinetname" type="text" class="form-control" aria-required="true" data-tip="输入机柜名">
+                                 </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="idc_id" class="col-sm-2 control-label">所在机房<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="idc_id" name="idc_id" placeholder="idc_id" type="text" class="form-control" aria-required="true" data-tip="机房中文名">
+                                 </div>
+                            </div> 
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="u_num" class="col-sm-2 control-label">U位<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="u_num" name="u_num" type="u_num" class="form-control" aria-required="true" data-tip="u_num">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="power" class="col-sm-2 control-label">电量<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="power" name="power" placeholder="Name" type="text" class="form-control" aria-required="true" data-tip="电量">
+                                 </div>
+                            </div>
+
+
+	                            <div class="hr-line-dashed"></div>
+                        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="update_button" type="button" class="btn btn-primary update">确认</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
+-->
+
+<script>
+/*
+$(".btn-info").click(function(){
+    $('#updateModal').modal('show')
+    var id = $(this).attr('data-id')
+    $.getJSON('/updatecab',{id: id},function(data){
+	if (data['code'] == 0){
+//	    console.log(data['result'])
+	    console.log(data['idcs'])
+	    console.log(data['result']['name'])
+	    $('#id').val(data['result']['id'])
+	    $('#name').val(data['result']['name'])
+	    $('#idc_id').val(data['idcs'])
+	    $('#u_num').val(data['result']['u_num'])
+	    $('#power').val(data['result']['power'])
+	}
+    })
+})
+
+        $("#update_button").click(function(){
+            $.post("/updatecab",$("#updatecabForm").serialize(),function(data){
+                data=JSON.parse(data);
+                if(data["code"] == 0){
+//                    location.href="/cabinet";
+		    location.reload(true)
+                }else{
+                    $("#errmsg").text(data["errmsg"]);
+                }
+            })
+            return false
+        })
+*/
+
+$('#editable').DataTable({
+    "bDestroy": true, 
+    "language": {
+        "lengthMenu": "每页 _MENU_ 条记录",
+        "zeroRecords": "没有找到记录",
+        "sInfo": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 ),显示第 _START_ 至 _END_ 项(总共 _TOTAL_ 项)",
+        "infoEmpty": "无记录",
+        "infoFiltered": "(从 _MAX_ 条记录过滤)",
+        "sSearch": "搜索:",
+        "oPaginate": {
+        "sFirst": "首页",
+        "sPrevious": "上一页",
+        "sNext": "下一页",
+        "sLast": "末页"
+        }
+    },
+    "order": [[ 0,"asc" ]]
+})
+
+    $('.del').click(function(){
+	var id = $(this).attr('data-id')
+	if(confirm('confirm delete?')){
+	    $.getJSON('/delcabinet',{id:id},function(data){
+		if(data['code'] == 0){
+                  swal({
+                    title:'删除成功',
+                    text:data['result'],
+                    type:'success',
+                    confirmButtonText:'Cool'
+                    },function(){
+                             location.reload()
+//                        location.href="/cabinet";
+                    })
+//                    location.href="/cabinet";
+		}else{
+		    $('#errmsg').text(data['errmsg']);
+		}
+	    })
+	    return false
+	}
+    })
+</script>
+
+</div> <!--col-sm-12-->
+{% endblock %}

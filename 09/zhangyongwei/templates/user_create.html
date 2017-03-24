@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <title>添加用户</title>
+    <style type="text/css">
+            .left {
+                float: left;
+                height: 0px;
+            }
+
+            .right {
+                height: 0px;
+            }
+        </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  ...
+</nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 left">
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation" class="active"><a href="#">Home</a></li>
+          <li role="presentation"><a href="#">Profile</a></li>
+          <li role="presentation"><a href="#">Messages</a></li>
+        </ul>
+    </div>
+
+    <div class="col-md-4 right">
+      <form id="addForm" class="form-horizontal">
+          <div class="form-group">
+            <label for="name" class="col-md-2 control-label">用户名：</label>
+            <div class="col-md-10">
+                <input id='name' type='text' name='name'>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="name_cn" class="col-md-2 control-label">中文名：</label>
+            <div class="col-md-10">
+                <input id='name_cn' type='text' name='name_cn'>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mobile" class="col-md-2 control-label">手机号：</label>
+            <div class="col-md-10">
+                <input id='mobile' type='text' name='mobile'>
+            </div>
+          </div>
+
+          <div class="form-group">
+              <label for="email" class="col-md-2 control-label">邮箱号：</label>
+              <div class="col-md-10">
+                  <input id='email' type='text' name='email'>
+              </div>
+          </div>
+
+          <div class="form-group">
+             <label class="col-md-2 control-label">角色：</label>
+             <div class="col-md-10">
+                <select name='role' id='role'>
+                    <option value="admin">管理员</option>
+                    <option value="user">普通用户</option>
+                </select>
+             </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-2 control-label">状态：</label>
+            <div class="col-md-10">
+                <select name='status' id='status'>
+                    <option value=0>正常</option>
+                    <option value=1>锁定</option>
+                </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="col-md-2 control-label">密码：</label>
+            <div class="col-md-10">
+                <input id='password' type='password' name='password'>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="repwd" class="col-md-2 control-label">重复密码：</label>
+            <div class="col-md-10">
+                <input id='repwd' type='password' name='repwd'>
+            </div>
+          </div>
+
+        </form>
+        <div class="col-md-4 col-md-offset-2">
+            <button type="button" class="btn btn-primary" id="addUser">添加用户</button>
+            <a href="/users/"> <button type="button" class="btn btn-primary">返回</button></a>
+        </div>
+        <p id="error1" style="color:red"></p>
+    </div>
+  </div>
+
+</div>
+
+
+<script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#addUser").click(function () {
+            var data = $("#addForm").serialize();
+            $.post('/users/add/', data, function (result) {
+                result = JSON.parse(result);
+                if(result['status'] == 0){
+                    window.location.href = '/users/';
+                }else{
+                    console.log(result['msg']);
+                    $("p#error1").text(result['msg']);
+                }
+            })
+        })
+    });
+</script>
+</body>
+</html>

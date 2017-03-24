@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加用户</title>
+</head>
+<body>
+    <form id="addForm">
+        <div>
+            <label>用户名：</label>
+            <input id='name' type='text' name='name' >
+        </div> <!-- name -->
+
+        <div>
+            <label>中文名：</label>
+            <input id='name' type='text' name='name_cn' >
+        </div> <!-- cn_name -->
+
+        <div>
+            <label>密码:</label>
+            <input type="password" name="password">
+        </div>
+
+        <div>
+            <label>再次输入密码:</label>
+            <input type="password" name="re_password">
+        </div>
+
+        <div>
+            <label>手机号：</label>
+            <input id='mobile' type='text' name='mobile'>
+        </div><!-- mobile --> 
+
+        <div>
+            <label>邮箱号：</label>
+            <input id='email' type='text' name='email'>
+        </div><!-- email -->
+
+        <div>
+            <label>角色：</label>
+            <select name='role' id='role'>
+                <option value="ops">ops</option>
+                <option value="php">php</option>
+                <option value="app">app</option>
+            </select>
+         </div> <!--role-->
+
+         <div>
+            <label>状态：</label>
+            <select name='status' id='status'>
+                <option value=0>正常</option> 
+                <option value=1>锁定</option>
+            </select>
+         </div> <!--status-->
+
+         <div>
+            <button id="adduser">添加用户</button>
+        </div> <!--button--> 
+    </form>
+    <div style="color:red" id="errmsg"></div>
+
+    <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+    <script>
+    $('#adduser').on('click',function(){
+     var str = $('#addForm').serialize()
+     console.log(str) 
+     $.post("/adduser",str,function(data){
+          console.log(data)    
+          data = JSON.parse(data)
+          console.log(data)  
+          if (data['code']==0){
+            alert(data['result'])
+            location.href="/login"
+          }else{
+            $('#errmsg').html(data['errmsg'])
+           }
+     })
+      return false
+	})
+    </script>
+
+</body>
+</html>

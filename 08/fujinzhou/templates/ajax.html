@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>个人用户信息管理</title>
+</head>
+<body>
+    <h4>用户列表</h4>
+    <table border='1'>
+        <thead>
+            <tr>
+                <td>用户名</td>
+                <td>年龄</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+	<tbody>
+	</tbody>
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$.getJSON('/list',function(data){
+	console.log(data)
+	if (data['code']==0){
+		var str=""	
+		data=data['result']
+		str='<tr>'+
+			'<td>'+data['name']+'</td>'+
+			'<td>'+data['age']+'</td>'+
+			'<td>'+
+			'<button data-id="'+data['id']+'">更新</button>'+
+			'</td>'+'</tr>'
+		$('tbody').html(str)
+	}else{
+		$('#errmsg').html("fail")	
+	}
+
+})
+</script>
+        <form id="loginform">
+        <input id="name" type="text" name="name" placeholder="用户名">
+        <input id="password" type="password" name="password" placeholder="密码">
+        <input id="loginbtn" type="submit" value="登录">
+    	</form>
+<script>
+$('#loginbtn').on('click',function(){
+     var str = $('#loginform').serialize()
+	console.log(str)
+     $.post("/add",str,function(data){
+          data = JSON.parse(data)
+	console.log(data)
+          if (data['code']==0){
+            alert(data['result']['name'])
+          }else{
+            $('#errmsg').html(data['errmsg'])
+           }
+     })
+      return false
+})
+</script>
+</body>
+</html>

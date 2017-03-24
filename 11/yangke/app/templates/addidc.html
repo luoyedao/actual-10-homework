@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+添加机房
+{% endblock %}
+
+{% block main %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-10">
+             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>填写机房信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form id="idcForm" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">机房简写<span class="red-fonts ">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="name" name="name" placeholder="机房简写" type="text" class="form-control" datatype="*">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">机房名称<span class="red-fonts">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="name_cn" name="name_cn" placeholder="机房名称" type="text" class="form-control" datatype="*">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">机房地址<span class="red-fonts">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="address" name="address" placeholder="机房地址" type="text" class="form-control" datatype="*">
+                             </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">机房联系人</label>
+                            <div class="col-sm-8">
+                                <input id="adminer" name="adminer" placeholder="机房联系人" type="text" class="form-control" datatype="*">
+                             </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">联系人电话<span class="red-fonts">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="phone" name="phone" type="text" placeholder="联系人电话" class="form-control" datatype="m" errormsg="手机格式错误">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">机房机柜数<span class="red-fonts">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="num" name="num" type="text" placeholder="机房机柜数" class="form-control" datatype="n" errormsg="必须为数字">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white" type="reset">取消</button>
+                                <button id="submit_button" class="btn btn-primary">确认保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#idcForm").Validform({
+        tiptype:3,
+    })
+
+    $("#submit_button").click(function () {
+        var demo=$("#idcForm").Validform()
+        if(demo.check()){
+            $.post("/addidc",$("#idcForm").serialize(),function (data) {
+                data=JSON.parse(data)
+                if(data["code"]==0){
+                    swal({
+                        title:"机房添加成功",
+                        text:data["result"],
+                        type:"success",
+                        confirmButtonText:"确定"
+                        },function () {
+                            location.href="/idc"
+                    })
+                }else{
+                    swal("机房添加错误",data["errormsg"],"error")
+                }
+            })
+            return false
+        }
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>POMS用户信息更新</title></head>
+</body><h2>用户信息更新</h2><hr/>
+<!-- <form action="/update" method="post"> -->
+<form id="updateForm">
+  <input type="hidden" value={{user.id}} name="id" />
+  <p>账号: <input id="name" type="text" value={{user.name}} name="name" /></p>
+  <p>姓名: <input id="name_cn" type="text" value={{user.name_cn}} name="name_cn" /></p>
+  <p>邮箱: <input id="email" type="text" value={{user.email}} name="email" /></p>
+  <p>手机: <input id="mobile" type="text" value={{user.mobile}} name="mobile" /></p>
+  {% if user.role == 'admin' %}
+      角色: <input type="text" value=管理员>
+  {% elif user.role == 'user' %}
+      角色: <input type="text" value=普通用户>
+  {% endif %}
+  <p>
+  <label>更改角色:</label>
+	<select name="role" id="role">
+	    <option value="admin">管理员</option>
+	    <option value="user">普通用户</option>
+	</select>
+  </p>
+  {% if user.status == 1 %}
+      状态: <input type="text" value=正常>
+  {% elif user.status == 0 %}
+      状态: <input type="text" value=锁定>
+  {% endif %}
+  <p>
+<label>更改状态:</label>
+	<select name="status" id="status">
+	    <option value="1">正常</option>
+	    <option value="0">锁定</option>
+	</select> <br/>
+  </p>
+  <p><input id="submits" type="submit" value="提交更新" />
+  <a href="/admin"> <input type="button" value="放弃更改"></a>
+  </p>
+</form>
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#submits').on('click',function(){
+	var str = $('#updateForm').serialize()
+	$.post("/update",str,function(data){
+		data = JSON.parse(data)
+		console.log(data)
+		if (data['code'] == 0){
+		    alert(data['errmsg'])
+		    location.href="/admin/"
+		}
+	})
+		return false
+})
+</script>
+
+
+</body>
+</html>
+
+

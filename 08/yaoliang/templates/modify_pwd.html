@@ -1,0 +1,53 @@
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+</head>
+<body>
+  <form id='modify_pwdForm' >
+	<input type="hidden" id='id' name="id" value='{{user.id}}'>
+        <div>
+            <label>用户名&nbsp：</label>
+            <input id='name' type='text' name='name' readonly='true' value={{user.name}}>
+        </div> <!-- name -->
+
+        <div>
+            <label>旧密码&nbsp：</label>
+            <input id='password' type='password' name='password' value={{user.password}}>
+        </div><!-- password-->
+
+        <div>
+            <label>新密码&nbsp：</label>
+            <input id='password' type='password' name='newpassword'>
+        </div>
+
+        <div>
+            <label>重复密码：</label>
+            <input id='repassword' type='password' name='renewpassword'>
+        </div>
+            <button id='modifybtn' type="submit">确认</button>
+    </form><!--form end-->
+    <div id='intro' style="color:red">
+   	 {{result}}
+    </div>
+<script src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js'></script>
+<script>
+$('#modifybtn').click(function(){
+    var str=$('#modify_pwdForm').serialize()
+    console.log(str)
+    $.post('/modify_pwd',str,function(data){
+	console.log(data)
+	data=JSON.parse(data)
+	console.log(data)
+	if (data['code']==0){
+	    alert(data['result'])
+	    location.href='/userlist'
+	}else{
+	    $('div#intro').html(data['errmsg'])
+	}
+    })
+    return false
+})
+</script>
+</body>
+</html>

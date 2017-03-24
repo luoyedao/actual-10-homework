@@ -1,0 +1,570 @@
+{% extends 'base.html' %}
+{% block breadcrumb %}
+    <a href="/userlist">
+        用户列表
+    </a>
+{% endblock %}
+{% block main %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5> 查看用户 </h5>
+                        <div class="ibox-tools">
+                            <a class="collapise-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="">
+                            {% if sess['role'] == '1' %}
+                                <button class="btn btn-sm btn-primary" id="add"> 添加用户</button>
+                                <button id="del_btn" class="btn btn-sm btn-danger "> 删除所选</button>
+                            {% endif %}
+                            <form id="search_form" method="get" action="" class="pull-right mail-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control input-sm" id="search_input"
+                                           name="keyword" placeholder="Search">
+                                    <div class="input-group-btn">
+                                        <button id='search_btn' type="submit" class="btn btn-sm btn-primary">
+                                            -搜索-
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <table class="table table-striped table-bordered table-hover " id="editable">
+                            <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <input type="checkbox" id="check_all"
+                                           onclick="checkAll('check_all', 'checked')">
+                                </th>
+                                <th class="text-center">用户名</th>
+                                <th class="text-center">姓名</th>
+                                <th class="text-center">邮箱</th>
+                                <th class="text-center">手机</th>
+                                <th class="text-center">用户组</th>
+                                <th class="text-center">状态</th>
+                                <th class="text-center">创建时间</th>
+                                <th class="text-center">最后登录时间</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if users %}
+                                {% for user in users %}
+                                    <tr class="gradeX">
+                                        <td class="text-center">
+                                            <input type="checkbox" name="checked" value="2">
+                                        </td>
+                                        <td class="text-center">{{ user.name }}</td>
+                                        <td class="text-center"> {{ user.name_cn }} </td>
+                                        <td class="text-center" title="">{{ user.email }}</td>
+                                        <td class="text-center"> {{ user.mobile }}</td>
+                                        {% if user.role == "1" %}
+                                            <th class="text-center">管理员</th>
+                                        {% else %}
+                                            <th class="text-center">普通用户</th>
+                                        {% endif %}
+                                        {% if user.status == 0 %}
+                                            <td class="text-center">启用</td>
+                                        {% else %}
+                                            <td class="text-center">禁用</td>
+                                        {% endif %}
+                                        <td class="text-center"> {{ user.create_time }}</td>
+                                        <td class="text-center"> {{ user.last_time }}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-xs btn-info edit-d" data-id="{{ user.id }}">
+                                                编辑
+                                            </button>
+                                            <button class="btn btn-xs btn-warning upass" data-id="{{ user.id }}">修改密码
+                                            </button>
+                                            {% if sess.role == '1' %}
+                                                <button class="btn btn-xs btn-danger del" data-id="{{ user.id }}">删除
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+
+                        <!-- 删除模态窗开始 -->
+                        <div class="modal fade" id="DelModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                        </button>
+                                        <h4 class="modal-title">删除用户</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>是否删除</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirm">
+                                            确认
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                        <!-- 删除模态窗 ******************结束 -->
+
+                        <!-- 点击删除 出现提示框（确认或取消）不刷新页面 ******  开始-->
+                        <script>
+                            $(document).ready(function () {
+                                $('.del').on('click', function () {
+                                    var ids = $(this).attr('data-id');
+                                    var row = $(this).closest('tr');
+                                    $('#DelModal').modal('show');
+                                    $('#confirm').click(function () {
+                                        $.get('/userlist/userdel?id=' + ids, function (data) {
+                                                    row.remove();
+                                                }
+                                        );
+                                    })
+                                })
+                            })
+                        </script>
+                        <!-- 点击删除 出现提示框（确认或取消）不刷新页面 ******  结束-->
+
+                        <!-- 修改密码模态窗 ******************开始 -->
+                        <div class="modal fade" id="UpassModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                        </button>
+                                        <h4 class="modal-title">修改密码</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="ibox-content">
+                                            <form method="post" id="UpassForm" class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label for="username" class="col-sm-2 control-label">密码<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="password" name="password" type="password"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 control-label">确认密码<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="re_password" name="re_password" type="password"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="ttt">
+                                            确认
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                        <!-- 修改密码模态窗 ******************结束 -->
+
+                        <!-- 点击修改密码  ******  开始-->
+                        <script>
+                            $(document).ready(function () {
+                                $('.upass').on('click', function () {
+                                    var ids = $(this).attr('data-id');
+                                    $('#UpassModal').modal('show');
+                                    $('#ttt').click(function () {
+                                        var str = $('#UpassForm').serialize();
+                                        $.post('/userlist/upasswd?id=' + ids, str, function (data) {
+                                        })
+                                    })
+                                })
+                            })
+                        </script>
+                        <!-- 点击修改密码 *******************结束-->
+
+                        <!-- 更新信息更新信息模态窗 *******************开始-->
+                        <div class="modal fade" id="UpdateModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                        </button>
+                                        <h4 class="modal-title">更新信息</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="ibox-content">
+                                            {% if sess.role == '1' %}
+                                                <form method="post" id="UpuserForm" class="form-horizontal">
+                                                    {% if errmsg %}
+                                                        <div class="alert alert-warning text-center">{{ errmsg }}</div>
+                                                    {% endif %}
+                                                    <div class="form-group">
+                                                        <label for="username" class="col-sm-2 control-label">用户名<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="username" name="name" placeholder="Username"
+                                                                   type="text" class="form-control"
+                                                                   value="" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="hr-line-dashed"></div>
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-sm-2 control-label">姓名<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="name" name="name_cn" type="text"
+                                                                   class="form-control" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-sm-2 control-label">邮箱<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="email" name="email" type="text"
+                                                                   class="form-control" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-sm-2 control-label">手机<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="mobile" name="mobile" placeholder="Mobile"
+                                                                   type="text" class="form-control"
+                                                                   value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="hr-line-dashed"></div>
+                                                    <div class="form-group"><label
+                                                            class="col-sm-2 control-label">用户状态<span
+                                                            class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <div class="col-sm-5">
+                                                                <select class="form-control" name="status">
+                                                                    <option name="yes" value="0">启用</option>
+                                                                    <option name="no" value="1">禁用</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="role" class="col-sm-2 control-label">权限<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <div class="col-sm-5">
+                                                                <select class="form-control" name="role">
+                                                                    <option name="admin" value="1">管理员</option>
+                                                                    <option name="othenuser" value="2">普通用户</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="hr-line-dashed"></div>
+                                                    <div class="hr-line-dashed"></div>
+                                                    <div class="hr-line-dashed"></div>
+                                                </form>
+                                            {% else %}
+                                                <form method="post" id="UpuserForm" class="form-horizontal">
+                                                    {% if errmsg %}
+                                                        <div class="alert alert-warning text-center">{{ errmsg }}</div>
+                                                    {% endif %}
+                                                    <div class="form-group">
+                                                        <label for="username" class="col-sm-2 control-label">用户名<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="username" name="name" type="text"
+                                                                   class="form-control" value=""
+                                                                   readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="hr-line-dashed"></div>
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-sm-2 control-label">姓名<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="name" name="name_cn" type="text"
+                                                                   class="form-control" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-sm-2 control-label">邮箱<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="email" name="email" type="text"
+                                                                   class="form-control" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-sm-2 control-label">手机<span
+                                                                class="red-fonts">*</span></label>
+                                                        <div class="col-sm-8">
+                                                            <input id="mobile" name="mobile" type="text"
+                                                                   class="form-control" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="hr-line-dashed"></div>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                                id="upbutton">
+                                            确认
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                        <!-- 更新信息模态窗 *******************结束-->
+                        <!-- 更新信息 jquery *******************开始-->
+                        <script>
+                            $(document).ready(function () {
+                                $('.edit-d').on('click', function () {
+                                    var ids = $(this).attr('data-id');
+                                    $.get('/userlist/userup?id=' + ids, function (data) {
+                                        console.log(data['users']);
+                                        console.log(data['sess']);
+                                        console.log($("#username").attr("value", data['users']['name']));
+                                        console.log($("#name").attr("value", data['users']['name_cn']));
+                                        console.log($("#email").attr("value", data['users']['email']));
+                                        console.log($("#mobile").attr("value", data['users']['mobile']));
+                                        $('#UpdateModal').modal('show');
+                                    });
+                                    $('#upbutton').click(function () {
+                                        var str = $('#UpuserForm').serialize();
+                                        $.post('/userlist/userup?id=' + ids, str, function (data) {
+                                            window.location.href = '/userlist'
+                                        })
+                                    })
+                                })
+                            })
+                        </script>
+                        <!-- 更新信息 jquery *******************结束-->
+                        <!-- 添加用户模态窗 *******************开始-->
+                        <div class="modal fade" id="AddModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                        </button>
+                                        <h4 class="modal-title">添加用户</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="ibox-content">
+                                            <form method="post" id="AddForm" class="form-horizontal" action="">
+                                                <div class="form-group">
+                                                    <label for="username" class="col-sm-2 control-label">用户名<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="username" name="name" placeholder="Username"
+                                                               type="text"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 control-label">姓名<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="name" name="name_cn" placeholder="Name" type="text"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 control-label">密码<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="password" name="password" placeholder="Password"
+                                                               type="password"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 control-label">确认密码<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="re_password" name="re_password"
+                                                               placeholder="Password"
+                                                               type="password"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 control-label">邮箱<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="email" name="email" placeholder="Email" type="text"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name" class="col-sm-2 control-label">手机<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <input id="mobile" name="mobile" placeholder="Mobile"
+                                                               type="text"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group"><label class="col-sm-2 control-label">用户状态<span
+                                                        class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <div class="col-sm-5">
+                                                            <select class="form-control" name="status">
+                                                                <option name="yes" value="0">启用</option>
+                                                                <option name="no" value="1">禁用</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="role" class="col-sm-2 control-label">权限<span
+                                                            class="red-fonts">*</span></label>
+                                                    <div class="col-sm-8">
+                                                        <div class="col-sm-5">
+                                                            <select class="form-control" name="role">
+                                                                <option name="admin" value="1">管理员</option>
+                                                                <option name="othenuser" value="2">普通用户</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="AddUser">
+                                            确认
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                        <!-- 添加用户模态窗 *******************结束-->
+                        <!-- 添加用户jquery ******************开始-->
+                        <script>
+                            $(document).ready(function () {
+                                $('#add').on('click', function () {
+                                    $.get('/userlist/add', function (data) {
+                                        $('#AddModal').modal('show');
+                                    });
+                                    $('#AddUser').click(function () {
+                                        var str = $('#AddForm').serialize();
+                                        console.log(str);
+                                        $.post('/userlist/add', str, function (data) {
+                                            console.log(data);
+                                            if (str == '') {
+                                                alert('不能为空')
+                                            }
+                                            else if (data['code'] == 0) {
+                                                alert(data['result']);
+                                                location.href = '/userlist'
+                                            }
+                                            else if (data['code'] == 1) {
+                                                alert(data['errmsg']);
+                                            }
+                                            else if (data['code'] == 2) {
+                                                alert(data['errmsg']);
+                                            }
+                                            else {
+                                                alert(data['errmsg']);
+                                            }
+                                        });
+                                        return false
+                                    });
+                                })
+                            })
+                        </script>
+                        <!-- 添加用户jquery ******************结束-->
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                    Showing 1 to 2 of 2 entries
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="dataTables_paginate paging_simple_numbers" id="editable_paginate">
+                                    <ul class="pagination" style="margin-top: 0; float: right">
+
+                                        <li class="paginate_button previous disabled" aria-controls="editable"
+                                            tabindex="0" id="editable_previous">
+                                            <a class="page" href="#">Previous</a>
+                                        </li>
+
+
+                                        <li class="paginate_button active" aria-controls="editable" tabindex="0"><a
+                                                class="page" href="?page=1" title="第1页">1</a></li>
+
+
+                                        <li class="paginate_button next disabled" aria-controls="editable"
+                                            tabindex="0" id="editable_next">
+                                            <a class="page" href="#">Next</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <script>
+                                function sleep(n) { //n表示的毫秒数
+                                    var start = new Date().getTime();
+                                    while (true) if (new Date().getTime() - start > n) break;
+                                }
+
+                                $(document).ready(function () {
+                                    $('.page').click(function () {
+                                        var searchStr = location.search;
+                                        var old_href = $(this).attr('href').replace('?', '');
+                                        var searchArray = searchStr.split('&');
+
+                                        if (searchStr == '') {
+                                            searchStr = '?page=1'
+                                        }
+
+                                        if (searchStr.indexOf('page') >= 0) {
+                                            searchArray.pop();
+                                        }
+
+                                        searchArray.push(old_href);
+                                        if (searchArray.length > 1) {
+                                            $(this).attr('href', searchArray.join('&'));
+                                        }
+
+                                    })
+                                });
+
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

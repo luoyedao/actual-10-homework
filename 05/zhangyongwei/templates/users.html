@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+</head>
+<body>
+<table border="1px">
+    <thead>
+        <td>用户名</td>
+        <td>密码</td>
+        <td>操作</td>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.get('username', '') }}</td>
+            <td>{{ user.get('password', '') }}</td>
+            <td><a href="/delete_user/?username={{ user.get('username', '') }}">删除</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

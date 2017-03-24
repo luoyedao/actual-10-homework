@@ -1,0 +1,34 @@
+<html>
+<body>
+<!-- <form action='/' method='post'> -->
+    <form id='loginForm'> 
+        用户名:<input id='name' type='text' name='name'>
+	<br>
+	密&nbsp码:<input id='password' type='password' name='password'>
+	<br>
+	<input id='loginbtn' type='submit' value='登录'>
+    </form>
+    <div style="color:red">
+	    {{result}}
+    </div>
+<script src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js'></script>
+<script>
+$('#loginbtn').click(function(){
+    var str=$('#loginForm').serialize()
+    console.log(str)
+    $.post('/',str,function(data){
+	console.log(data)
+	data=JSON.parse(data)
+	console.log(data)
+	if (data['code']==0){
+	    alert(data['result'])
+	    location.href='/userlist'
+	}else{
+	    $('div').html(data['errmsg'])
+	}
+    })
+    return false
+})
+</script>
+</body>
+</html>

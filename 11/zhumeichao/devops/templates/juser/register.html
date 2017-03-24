@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="wrapper wrapper-content animated fadeInRight"><!--添加用户-->
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>填写基本信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form action="" class="form-horizontal nice-validator n-yellow" id="regForm" method="post" novalidate="novalidate">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="name">用户名<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="用户名" name="name" aria-required="true" data-tip="输入用户名">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="name_cn">姓名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="昵称" name="name_cn" aria-required="true" data-tip="姓名">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="passwd">密码<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" placeholder="" name="password" aria-required="true" data-tip="密码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="passre">确认密码<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" placeholder="" name="passre" aria-required="true" data-tip="重复密码">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="email">Email<span class="red-fonts">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="xx@mccoy.com" name="email" aria-required="true" data-tip="Email">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="phone">手机号</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="12345678910" name="mobile" aria-required="true" data-tip="Phone">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="role">权限</label>
+                                <div class="col-sm-8">
+				<select name="role" class="form-control">
+                                    <label><option value="user">普通用户</label>
+                                    <label><option value="admin">管理员</label>
+				</select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+				<label class="col-sm-2 control-label" for="status">状态</label>
+                                <div class="col-sm-8">
+				<select name="status" class="form-control">
+                                    <label><option value="0">启用 </label>
+                                    <label><option value="1">禁用 </label>
+				</select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-primary" id="subtn">确认保存</button>
+                                </div>
+                            </div>
+                        </form>
+                        <a href="/userlist"><button class="btn btn-primary">返回用户管理</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div><!--添加用户-->
+</table><p id="result" style="color:red">{{ result }}</p>
+<script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#subtn').click(function(){
+	var formdata = $('#regForm').serialize()
+	$.post("/register",formdata,function(data){
+		data = JSON.parse(data)
+		if (data['code']==0){
+			//alert(data['result'])
+			//location.href="/userlist"
+			swal({
+                                title: "注册成功",
+                                type: "success",
+                                confirmButtonText: "确定"
+                        },function(){
+                                location.href="/userlist"
+                        });
+		}else{
+			//$('#result').html(data['errmsg'])
+			swal("MY GOD",("注册失败"),"error");
+		}
+	})
+	return false
+})
+</script>
+{% endblock %}
+</body>
+</html>

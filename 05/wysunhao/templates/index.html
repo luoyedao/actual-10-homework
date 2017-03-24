@@ -1,0 +1,23 @@
+<form action='/choice'>
+    please input login | register | deluser:<input type='text' name='choice'>
+    <input type='submit' value='OK'>
+</form>
+
+
+<table border='1'>
+    <thead>
+        <tr>
+        <td> username </td>
+        <td> password </td>
+        </tr>
+    <thead>
+    <tbody>
+        {% for k,v in pwd.items() %}
+        <tr>
+            <td>{{k}}</td>
+            <td>{{v}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+

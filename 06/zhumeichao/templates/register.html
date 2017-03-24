@@ -1,0 +1,47 @@
+<p><b>注册用户
+<table border='0'>
+	<form id="regForm"  action="/register" method='POST' accept-charset="UTF-8">
+        <tr>
+	    <td>用户名:</td>
+	    <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+	    <td>中文名:</td>
+	    <td><input type="text" name="name_cn"></td>
+        </tr>
+        <tr>
+	    <td>密  码:</td>
+	    <td><input type="password" name="passwd"></td>
+        </tr>
+        <tr>
+	    <td>确认密码:</td>
+	    <td><input type="password" name="passre"></td>
+        </tr>
+        <tr>
+	    <td>邮  件</td>
+	    <td><input type="text" name="email"></td>
+        </tr>
+        <tr>
+	    <td>手机号</td>
+	    <td><input type="text" name="mobile"></td>
+        </tr>
+        <tr>
+	    <td>角  色</td>
+	    <td><select name="role" id='role' >
+			<option value="user">普通用户</option>
+			<option value="admin">管理员</option>
+		</select></td>
+        </tr>
+        <tr>
+	    <td>状  态</td>
+	    <td><select name="status" id='status' >
+			<option value="0">可用</option>
+			<option value="1">禁用</option>
+		</select></td>
+        </tr>
+        <tr>
+	    <td><input type='submit' name="register" value="注  册"></td>
+	    <td><b><a href="/login">返回登陆</td>
+        </tr>
+	</form>
+</table><p style="color:red">{{ result }}</p>

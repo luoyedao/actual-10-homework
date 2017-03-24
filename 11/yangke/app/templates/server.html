@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+服务器管理
+{% endblock %}
+
+{% block main %}
+<div class="col-sm-12">
+<div class="row text-right">
+    <a href="/addserver" class="btn btn-sm btn-primary">添加服务器</a>&nbsp&nbsp&nbsp&nbsp
+</div>
+<h1></h1>
+    <table class="table table-striped table-bordered table-hover " id="editable">
+    <thead>
+        <tr>
+            <th class="text-center">主机名</th>
+            <th class="text-center">内网IP</th>
+            <th class="text-center">外网IP</th>
+            <th class="text-center">所属机柜</th>
+            <th class="text-center">负责人</th>
+            <th class="text-center">联系电话</th>
+            <th class="text-center">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+       {% for ser in servers %}
+            <tr class="gradeX">
+                    <td class="text-center">{{ser['a.hostname']}}</td>
+                    <td class="text-center">{{ser['a.lan_ip']}}</td>
+                    <td class="text-center">{{ser['a.wan_ip']}}</td>
+                    <td class="text-center">{{ser['b.name']}}</td>
+                    <td class="text-center">{{ser['a.op']}}</td>
+                    <td class="text-center">{{ser['a.phone']}}</td>
+                    <td class="text-center">
+                        <button data-id="{{ser['a.id']}}" class="btn btn-xs btn-info update">编辑</button>
+                        <button data-id="{{ser['a.id']}}" class="btn btn-xs btn-danger del ">删除</button>
+                    </td>
+                </td>
+             </tr>
+        {% endfor %}
+     </tbody>
+    </table>
+
+<div class="modal fade" id="modalServer"> <!-- 模态框　-->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">服务器编辑</h4>
+      </div>
+        <form id="updateServer" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+            <input type="hidden" name="id" id="id">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">主机名</label>
+                    <div class="col-sm-8">
+                        <input id="hostname" name="hostname" type="text" class="form-control" datatype="*">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">内网IP</label>
+                    <div class="col-sm-8">
+                        <input id="lan_ip" name="lan_ip" type="text" class="form-control" datatype="ip" errormsg="IP格式错误">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">外网IP</label>
+                    <div class="col-sm-8">
+                        <input id="wan_ip" name="wan_ip" type="text" class="form-control" datatype="ip" errormsg="IP格式错误">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属机柜</label>
+                    <div class="col-sm-8">
+                        <select multiple class="form-control" name="cabinet_id" id="cabinet_id">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">负责人</label>
+                    <div class="col-sm-8">
+                        <input id="op" name="op" type="text" class="form-control" datatype="*">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">联系电话</label>
+                    <div class="col-sm-8">
+                        <input id="phone" name="phone" type="text" class="form-control" datatype="m" errormsg="手机格式错误">
+                    </div>
+                </div>
+            </div> <!-- end modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">退出</button>
+                <button type="button" class="btn btn-primary" id="serverSave">保存</button>
+            </div>
+        </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script>
+    $("#updateServer").Validform({
+        tiptype:3,
+        datatype:{
+            "ip":/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/,
+        }
+    })
+
+    $(document).ready(function () {
+        $("#editable").dataTable({
+            "language":{
+                "lengthMenu":"每页 _MENU_ 条记录",
+                "zeroRecords":"没有找到记录",
+                "sInfo": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 ),显示第 _START_ 至 _END_ 项(总共 _TOTAL_ 项)",
+                "infoEmpty": "无记录",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "sSearch": "搜索:",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "末页"
+                }
+            }
+        });
+    })
+
+    $(".update").click(function () {
+        $("#modalServer").modal("show")
+        var id=$(this).attr("data-id")
+        var html = ""
+        $("#cabinet_id").empty()
+        $.getJSON("/upserver",{"id":id},function (data) {
+            $("#id").val(data.server.id)
+            $("#hostname").val(data.server.hostname)
+            $("#lan_ip").val(data.server.lan_ip)
+            $("#wan_ip").val(data.server.wan_ip)
+            $("#op").val(data.server.op)
+            $("#phone").val(data.server.phone)
+            for(key in data.cab) {
+                html = html + "<option value=" + key + ">" + data.cab[key] + "</option>"
+            }
+            $("#cabinet_id").append(html)
+        })
+    }) /* end update modal */
+
+    $("#serverSave").click(function () {
+       var demo=$("#updateServer").Validform()
+       if(demo.check()){
+           $.post("/upserver",$("#updateServer").serialize(),function (data) {
+               data=JSON.parse(data)
+               if(data["code"]==0){
+                   swal({
+                        title:"修改成功",
+                        text:data["result"],
+                        type:"success",
+                        confirmButtonText:"确定"
+                    },function () {
+                        location.reload()
+                    })
+                }else(
+                    swal("Error","修改失败","error")
+                )
+           }) /* end post */
+       }
+    })
+
+    $(".del").click(function () {
+        var id=$(this).attr("data-id")
+        swal({
+            title:"确认删除?",
+            text:"确定删除该服务器吗？",
+            type:"warning",
+            showCancelButton:true,
+            confirmButtonColor:"#DD6B55",
+            confirmButtonText:"删除",
+            cancelButtonText:"返回",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },function (isConfirm) {
+            if(isConfirm){
+                $.getJSON("/delserver",{"id":id},function (data) {
+                    if(data["code"]==0){
+                        swal({
+                            title:"删除成功",
+                            text:data["result"],
+                            type:"success",
+                            confirmButtonText:"确定"
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        swal("删除失败","机柜删除失败","error")
+                    }
+                })
+            }else{
+                swal("返回","手贱，点错了，我要返回","error")
+            }
+        })
+    })
+
+</script>
+
+
+</div> <!-- end div col-sm-12 -->
+{% endblock %}

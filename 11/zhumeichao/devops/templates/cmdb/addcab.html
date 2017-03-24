@@ -1,0 +1,43 @@
+<div class="wrapper wrapper-content animated fadeInRight"><!--添加机柜-->
+    <div class="row">
+        <div class="col-sm-12">
+                <form action="" class="form-horizontal nice-validator n-yellow" id="addForm" method="post" novalidate="novalidate">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="name">机柜编号<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="机柜编号" name="name" aria-required="true" data-tip="机柜编号">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="idc_name">所在机房</label>
+                        <div class="col-sm-8">
+			    <select id="getting-single" name="idc_name">
+				{% for idc in idcname %}
+    				<option value="{{idc[0]}}">{{ idc[0] }}</option>
+				{% endfor %}
+			    </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="u_num">使用U位<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="使用U位" name="u_num" aria-required="true" data-tip="使用U位">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="power">是否上电<span class="red-fonts">*</span></label>
+                        <div class="col-sm-8">
+			<select name="power" class="form-control">
+                            <label><option value="0">上电 </label>
+                            <label><option value="1">下电 </label>
+                        </select>
+                        </div>
+                    </div>
+		</form>
+        </div>
+    </div>
+</div><!--添加机柜-->
+</table><p id="result" style="color:red">{{ result }}</p>

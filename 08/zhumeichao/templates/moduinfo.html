@@ -1,0 +1,29 @@
+<p><b>更新用户信息
+<table border='0'>
+	<form id="moduinfoForm" action="/update" method='POST' accept-charset="UTF-8">
+	{% if user %}
+	<tr>
+            <td><input type="hidden" name="id" value={{user.id}}></td>
+        </tr>
+        <tr>
+	    <td><input type="hidden" name="name" value={{user.name}}></td>
+        </tr>
+        <tr>
+	    <td>中文名:</td>
+	    <td><input type="text" name="name_cn" value={{user.name_cn}}></td>
+        </tr>
+        <tr>
+	    <td>邮  件</td>
+	    <td><input type="text" name="email" value={{user.email}}></td>
+        </tr>
+        <tr>
+	    <td>手机号</td>
+	    <td><input type="text" name="mobile" value={{user.mobile}}></td>
+        </tr>
+        <tr>
+	    <td><input type='submit' value="更  新"></td>
+	    <td><b><a href="/userinfo">返回个人中心</td></a>
+        </tr>
+	{% endif %}
+	</form>
+</table><p style="color:red">{{ result }}</p>

@@ -1,0 +1,30 @@
+<body>
+    <form id="passwdForm">
+    <p><input type="password" name="oldpassword" placeholder="原始密码" ></p>
+    <p><input type="password" name="password" placeholder="新密码" ></p>
+    <p><input type="password" name="password" placeholder="确认密码"></p>
+    <p><button id="changpass">修改</button></p>
+    </form>
+    <p id="errmsg" style="color:red"></p>
+   {% if errmsg %}
+    <div style="color:red">
+        {{errmsg}}
+    </div>
+    {% endif %}
+    <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+    <script>
+$('#changpass').on('click',function(){
+     	var str = $('#passwdForm').serialize()
+     	$.post("/modpasswd",str,function(data){
+          data = JSON.parse(data)
+          if (data['code']==0){
+            alert(data['result'])
+            location.href="/login"
+          }else{
+            $('#errmsg').html(data['errmsg'])
+           }
+    	 })
+      return false
+        })
+    </script>
+</body>

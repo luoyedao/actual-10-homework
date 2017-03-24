@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>登录</title>
+</head>
+<body>
+    <!--<form method="post" action="/login"> -->
+	<form id="loginform">
+        <input id="name" type="text" name="name" placeholder="用户名">
+        <input id="password" type="password" name="password" placeholder="密码">
+	<input id="loginbtn" type="submit" value="登录">
+    </form>
+    <form action="/operation">
+    	<td>
+                <a href="/adduser" type="submit">注册</a>
+        </td>
+    </form>
+    <p id="errmsg" style="color:red"></p>
+   {% if errmsg %}
+    <div style="color:red">
+        {{errmsg}}
+    </div>
+    {% endif %}
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#loginbtn').on('click',function(){
+     var str = $('#loginform').serialize()
+     $.post("/login",str,function(data){
+          data = JSON.parse(data)
+          if (data['code']==0){
+//            alert(data['result'])
+            location.href="/userlist"
+          }else{
+            $('#errmsg').html(data['errmsg'])
+           }
+     })
+      return false
+})
+</script>
+</body>
+</html>

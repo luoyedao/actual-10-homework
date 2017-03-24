@@ -1,0 +1,274 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<title>McCoyServer | 开源跳板机系统</title>
+<link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/static/css/animate.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet">
+<link href="/static/css/colorbox.css" rel="stylesheet">
+<link href="/static/css/vaildator/jquery.validator.css" rel="stylesheet">
+<link href="/static/css/magnific/magnific-popup.css" rel="stylesheet">
+<link href="/static/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+<link href="/static/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+<script src="/static/js/jquery-2.1.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/base.js"></script>
+<!-- pop windows -->
+<script src="/static/js/jquery.colorbox.js"></script>
+<!-- validator js -->
+<script src="/static/js/validator/jquery.validator.js"></script>
+<script src="/static/js/validator/zh_CN.js"></script>
+<script src="/static/js/datapicker/bootstrap-datepicker.js"></script>
+<script src="/static/js/jquery.shiftcheckbox.js"></script>
+</head>
+<body>
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            
+<li class="nav-header">
+    <div class="dropdown profile-element">
+        <span>
+            <img alt="image" class="img-circle" src="/static/img/root.png" height="48" width="48">
+        </span>
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+            <span class="clear">
+                <span class="block m-t-xs">
+                    <strong class="font-bold">{{session['username']}} <span style="color: #8095a8"></span></strong>
+                </span>
+                <span class="text-muted text-xs block">
+                    {{session['role']}} <b class="caret"></b>
+                </span>
+            </span>
+        </a>
+        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+            <li><a href="/userinfo" class="iframe_user">个人信息</a></li>
+            <li class="divider"></li>
+            <li><a href="/logout">注销</a></li>
+        </ul>
+    </div>
+
+    <div class="logo-element">
+        JS+
+    </div>
+</li>
+<script>
+    $(".iframe_user").on('click', function(){
+        var url= $(this).attr("value");
+        layer.open({
+            type: 2,
+            title: '个人信息',
+            maxmin: true,
+            shift: 'top',
+            border: [2, 0.3, '#1AB394'],
+            shade: [0.5, '#000000'],
+            shadeClose: true,
+            area : ['800px' , '600px'],
+            content: url
+        });
+    });
+</script>
+            <li class="active" id="juser">
+                <ul class="nav nav-second-level collapse in">
+                    <li class="user active"><a href="/userlist">用户列表</a></li>
+                </ul>
+            </li>
+            <li class="special_link">
+                <a href="/" target="_blank"><i class="fa fa-database"></i> <span class="nav-label">访问主页</span></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<div id="page-wrapper" class="gray-bg">
+   <div class="row border-bottom">
+
+<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <ul class="nav navbar-top-links navbar-right">
+        <li>
+            <span class="m-r-sm text-muted welcome-message">欢迎使用McCoyServer开源跳板机系统</span>
+        </li>
+        <li>
+            <a href="/logout">
+                <i class="fa fa-sign-out"></i> Log out
+            </a>
+        </li>
+    </ul>
+</nav>
+   </div>
+            
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-10">
+        <h2>查看用户</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="/userlist">用户管理</a>
+            </li>
+            <li class="active">
+                <strong>用户列表</strong>
+            </li>
+        </ol>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="">
+                        <a href="/register" class="btn btn-sm btn-primary "> 添加用户 </a>
+                        <a id="del_btn" class="btn btn-sm btn-danger "> 删除所选 </a>
+                        <form id="search_form" method="get" action="/oneuser" class="pull-right mail-search">
+                            <div class="input-group">
+                                <input class="form-control input-sm" id="search_input" name="user" placeholder="Search" type="text">
+                                <div class="input-group-btn">
+                                    <button id="search_btn" type="submit" class="btn btn-sm btn-primary">
+                                        -搜索-
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <table class="table table-striped table-bordered table-hover " id="editable">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <input id="check_all" onclick="checkAll('check_all', 'checked')" type="checkbox">
+                                </th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">用户名</th>
+                                <th class="text-center">姓名</th>
+                                <th class="text-center">邮箱</th>
+                                <th class="text-center">手机号</th>
+                                <th class="text-center">角色</th>
+                                <th class="text-center">状态</th>
+                                <th class="text-center">创建时间</th>
+                                <th class="text-center">修改时间</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+			{% if users %}
+                        {% for user in users %}
+                            <tr class="gradeX">
+                                <td class="text-center">
+                                    <input name="checked" value="{{ user[0] }}" type="checkbox">
+                                </td>
+                                <td class="text-center">{{user[0]}}</td>
+                                <td class="text-center">{{user[1]}}</td>
+                                <td class="text-center">{{user[2]}}</td>
+                                <td class="text-center">{{user[3]}}</td>
+                                <td class="text-center">{{user[4]}}</td>
+                                <td class="text-center">{{user[5]}}</td>
+				{% if user[6] == 0 %}
+                                <td class="text-center">激活</td>
+				{% else %}
+                                <td class="text-center">禁用</td>
+				{% endif %}
+                                <td class="text-center">{{user[7]}}</td>
+                                <td class="text-center">{{user[8]}}</td>
+                                <td class="text-center">
+                                    <a href="/update?id={{user[0]}}" class="btn btn-xs btn-info">编辑</a>
+                                    <a href="/modpasswd?id={{user[0]}}" class="btn btn-xs btn-warning email">修改密码</a>
+                                    <a href="/deluser?id={{user[0]}}" class="btn btn-xs btn-danger del {% if user["role"] == 'admin' %} disabled {% endif %}">删除</a>
+                                </td>
+                            </tr>
+			{% endfor %}
+                        {% endif %}
+			{% if user %}
+                            <tr class="gradeX">
+                                <td class="text-center">
+                                    <input name="checked" value="{{ user[0] }}" type="checkbox">
+                                </td>
+                                <td class="text-center">{{user.id}}</td>
+                                <td class="text-center">{{user.name}}</td>
+                                <td class="text-center">{{user.name_cn}}</td>
+                                <td class="text-center">{{user.email}}</td>
+                                <td class="text-center">{{user.mobile}}</td>
+                                <td class="text-center">{{user.role}}</td>
+                                <td class="text-center">{{user.status}}</td>
+                                <td class="text-center">{{user.create_time}}</td>
+                                <td class="text-center">{{user.last_time}}</td>
+                                <td class="text-center">
+                                    <a href="/update?id={{user.id}}" class="btn btn-xs btn-info">编辑</a>
+                                    <a href="/modpasswd?id={{user.id}}" class="btn btn-xs btn-warning email">修改密码</a>
+                                    <a href="/deluser?id={{user.id}}" class="btn btn-xs btn-danger del {% if user.role == 'admin' %} disabled {% endif %}">删除</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+		<p id='errmsg'></p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+				Showing 1 to 2 of 2 entries
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+    <div class="dataTables_paginate paging_simple_numbers" id="editable_paginate">
+        <ul class="pagination" style="margin-top: 0; float: right">
+            
+                <li class="paginate_button previous disabled" aria-controls="editable" tabindex="0" id="editable_previous">
+                     <a class="page" href="#">Previous</a>
+                </li>
+                    <li class="paginate_button active" aria-controls="editable" tabindex="0"><a class="page" href="?page=1" title="第1页">1</a></li>
+                <li class="paginate_button next disabled" aria-controls="editable" tabindex="0" id="editable_next">
+                    <a class="page" href="#">Next</a>
+                </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+<script>
+$.getJSON('/userlist',function(data){
+	if (data['code'] == 0){
+		users=data['result']
+	}else{
+		$('#errmsg').html("False")
+	}
+})
+    function sleep(n) { //n表示的毫秒数
+            var start = new Date().getTime();
+            while (true) if (new Date().getTime() - start > n) break;
+        }
+    $(document).ready(function(){
+        $('.page').click(function(){
+            var searchStr = location.search;
+            var old_href = $(this).attr('href').replace('?', '');
+            var searchArray = searchStr.split('&');
+            if (searchStr == ''){
+                searchStr = '?page=1'
+            }
+            if (searchStr.indexOf('page')>=0){
+                searchArray.pop();
+            }
+            searchArray.push(old_href);
+            if (searchArray.length > 1) {
+                $(this).attr('href', searchArray.join('&'));
+            }
+        })
+    });
+</script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  <div class="footer fixed">
+    <div class="pull-right">
+        Version <strong>0.3.1</strong> GPL.
+    </div>
+    <div>
+        <strong>Copyright</strong> McCoyServer.org Team © 2016-2017
+    </div>
+  </div>
+</body>
+</html>

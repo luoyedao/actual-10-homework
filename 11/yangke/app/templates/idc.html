@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+机房管理
+{% endblock %}
+
+{% block main %}
+<div class="col-sm-12">
+<div class="row text-right">
+    <a href="/addidc" class="btn btn-sm btn-primary">添加机房</a>&nbsp&nbsp&nbsp&nbsp
+</div>
+<h1></h1>
+
+<table class="table table-striped table-bordered table-hover " id="editable">
+<thead>
+    <tr>
+        <th class="text-center">机房简写</th>
+        <th class="text-center">机房名称</th>
+        <th class="text-center">机房地址</th>
+        <th class="text-center">机房联系人</th>
+        <th class="text-center">联系人电话</th>
+        <th class="text-center">机房机架数</th>
+        <th class="text-center">操作</th>
+    </tr>
+</thead>
+<tbody>
+   {% for idc in idc_list %}
+        <tr class="gradeX">
+                <td class="text-center">{{idc.name}}</td>
+                <td class="text-center">{{idc.name_cn}}</td>
+                <td class="text-center">{{idc.address}}</td>
+                <td class="text-center">{{idc.adminer}}</td>
+                <td class="text-center">{{idc.phone}}</td>
+                <td class="text-center">{{idc.num}}</td>
+                <td class="text-center">
+                    <button data-id="{{idc.id}}" class="btn btn-xs btn-info update">编辑</button>
+                    <button data-id="{{idc.id}}" class="btn btn-xs btn-danger del ">删除</button>
+                </td>
+            </td>
+         </tr>
+    {% endfor %}
+ </tbody>
+</table>
+
+<div class="modal fade" id="modalIDC">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">IDC编辑</h4>
+      </div>
+        <form id="updateIDC" class="form-horizontal nice-validator n-yellow" novalidate="novalidate">
+            <input type="hidden" name="id" id="id">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机房简写</label>
+                    <div class="col-sm-8">
+                        <input id="name" name="name" type="text" class="form-control" datatype="*">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机房名称</label>
+                    <div class="col-sm-8">
+                        <input id="name_cn" name="name_cn" type="text" class="form-control" datatype="*">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机房地址</label>
+                    <div class="col-sm-8">
+                        <input id="address" name="address" type="text" class="form-control" datatype="*">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">联系人</label>
+                    <div class="col-sm-8">
+                        <input id="adminer" name="adminer" type="text" class="form-control" datatype="*">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">联系电话</label>
+                    <div class="col-sm-8">
+                        <input id="phone" name="phone" type="text" class="form-control" datatype="m" errormsg="手机格式错误">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机柜数量</label>
+                    <div class="col-sm-8">
+                        <input id="num" name="num" type="text" class="form-control" datatype="n" errormsg="必须为数字">
+                    </div>
+                </div>
+            </div> <!-- end modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">退出</button>
+                <button type="button" class="btn btn-primary" id="idcSave">保存</button>
+            </div>
+        </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    $("#updateIDC").Validform({
+        tiptype:3,
+    })
+
+
+    $(document).ready(function () {
+        $("#editable").dataTable({
+            "language":{
+                "lengthMenu":"每页 _MENU_ 条记录",
+                "zeroRecords":"没有找到记录",
+                "sInfo": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 ),显示第 _START_ 至 _END_ 项(总共 _TOTAL_ 项)",
+                "infoEmpty": "无记录",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "sSearch": "搜索:",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "末页"
+                }
+            }
+        });
+    })
+    // 显示模态框，渲染IDC信息
+    $(".update").click(function () {
+        $("#modalIDC").modal("show")
+        var idc_id=$(this).attr("data-id");
+        $.getJSON("/idcinfo",{id:idc_id},function(data){
+            $("#id").val(data["id"])
+            $("#name").val(data["name"])
+            $("#name_cn").val(data["name_cn"])
+            $("#address").val(data["address"])
+            $("#adminer").val(data["adminer"])
+            $("#phone").val(data["phone"])
+            $("#num").val(data["num"])
+        })
+    })
+
+    //更新IDC信息
+    $("#idcSave").click(function () {
+        var demo=$("#updateIDC").Validform()
+        if(demo.check()){
+            $.post("/idcupdate",$("#updateIDC").serialize(),function (data) {
+                console.log(data)
+                data=JSON.parse(data)
+                if(data["code"]==0){
+                    location.reload()
+                }else{
+                    swal("error")
+                }
+            })
+            return false
+        }
+    })
+
+    //删除IDC
+    $(".del").click(function () {
+        var id=$(this).attr("data-id")
+        swal({
+            title:"确认删除?",
+            text:"确定删除该IDC机房吗？",
+            type:"warning",
+            showCancelButton:true,
+            confirmButtonColor:"#DD6B55",
+            confirmButtonText:"删除",
+            cancelButtonText:"返回",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },function (isConfirm) {
+            if(isConfirm){
+                $.getJSON("/delidc",{"id":id},function (data) {
+                    if(data["code"]==0){
+                        swal({
+                            title:"删除成功",
+                            text:data["result"],
+                            type:"success",
+                            confirmButtonText:"确定"
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        swal("删除失败","IDC删除失败","error")
+                    }
+                })
+            }else{
+                swal("返回","手贱，点错了，我要返回","error")
+            }
+        })
+    })
+</script>
+</div> <!-- end div col-sm-12 -->
+{% endblock %}

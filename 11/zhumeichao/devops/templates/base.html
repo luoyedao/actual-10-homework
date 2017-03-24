@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<title>McCoyServer | 开源跳板机系统</title>
+<link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
+
+<!--plugins/css-->
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet">
+<link href="/static/plugin/Font-Awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet">
+<link href="/static/plugin/layer-v2.4/layer/skin/layer.css" rel="stylesheet">
+<link href="/static/plugin/sweetalert-master/dist/sweetalert.css" rel="stylesheet">
+<link href="/static/plugin/DataTables-1.10.12/media/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="/static/css/bootstrap-multiselect.css" rel="stylesheet">
+
+<!--plugins/js-->
+<script src="/static/js/jquery-2.1.1.js"></script>
+<script src="/static/plugin/layer-v2.4/layer/layer.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/plugin/DataTables-1.10.12/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/static/plugin/sweetalert-master/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
+
+</head>
+<body>
+
+<div id="wrapper">
+	{% include 'nav.html' %}
+
+	<div id="page-wrapper" class="gray-bg"><!--主体-->
+	   <div class="row border-bottom"><!--顶部-->
+		<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+		    <ul class="nav navbar-top-links navbar-right">
+			<li>
+			    <span class="m-r-sm text-muted welcome-message">欢迎使用McCoyServer开源CMDB系统</span>
+			</li>
+			<li>
+			    <a href="/logout">
+				<i class="fa fa-sign-out"></i> Log out
+			    </a>
+			</li>
+		    </ul>
+		</nav>
+	   </div><!--顶部-->
+	   
+	   <div id="content">{% block content %}{% endblock %}</div>
+
+	</div><!--主体-->
+
+	<div class="footer fixed"><!--尾部-->
+	  <div class="pull-right">
+	    LOL <strong>巨神峰ID: </strong> DK丶超神 
+	  </div>
+	  <div>
+	    <strong>McCoy</strong> 简单的生活 何尝不是一次华丽的冒险！！！
+	  </div>
+	</div><!--尾部-->
+</div>
+
+</body>
+</html>

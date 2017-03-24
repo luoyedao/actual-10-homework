@@ -1,0 +1,39 @@
+<p><b>登陆</p>
+<table border='0'>
+<!--	<form action="/login" method='POST'> -->
+	<form id="loginForm">
+        <tr>
+	    <td>用户名</td>
+	    <td><input type="text" id="name" name="user"></td>
+        </tr>
+        <tr>
+	    <td>密  码</td>
+	    <td><input type="password" id="passwd" name="pass"></td>
+        </tr>
+        <tr>
+	    <td><input type='submit' id='loginbtn' value="登  陆"></td>
+	    <td><b><a href='/'>放回首页</a></td>
+        </tr>
+	</form>
+</table><p id="errmsg" style="color:red">{{ result }} </p>
+
+<script src="/static/js/jquery-3.1.0.min.js"></script>
+<script>
+$('#loginbtn').on('click',function(){
+	var str = $('#loginForm').serialize()
+//	console.log(str)
+	$.post("/login",str,function(data){
+//		console.log(data)
+		data = JSON.parse(data)
+//		console.log(data)
+		if (data['code']==0){
+			alert(data['result'])
+			location.href="/userinfo"
+		}
+		else{
+			$("#errmsg").html(data['errmsg'])
+		}
+	})
+	return false
+})
+</script>

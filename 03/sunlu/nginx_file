@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+</head>
+<html>
+<body>
+<table border='1'>
+    <tr>
+        <th>访问量</th>
+        <th>IP</th>
+    </tr>
+    <tr>
+        <td>255</td>
+        <td>124.31.124.140</td>
+    </tr>
+    <tr>
+        <td>221</td>
+        <td>119.147.225.136</td>
+    </tr>
+    <tr>
+        <td>201</td>
+        <td>10.35.1.82</td>
+    </tr>
+    <tr>
+        <td>103</td>
+        <td>111.85.41.230</td>
+    </tr>
+    <tr>
+        <td>64</td>
+        <td>118.251.105.167</td>
+    </tr>
+    <tr>
+        <td>63</td>
+        <td>118.186.158.10</td>
+    </tr>
+    <tr>
+        <td>59</td>
+        <td>66.249.64.10</td>
+    </tr>
+    <tr>
+        <td>57</td>
+        <td>171.106.90.131</td>
+    </tr>
+    <tr>
+        <td>56</td>
+        <td>111.227.4.120</td>
+    </tr>
+    <tr>
+        <td>55</td>
+        <td>106.120.187.241</td>
+    </tr></table>
+</body>
+</html>
+                        

@@ -1,0 +1,838 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>Server | 运维管理平台</title>
+
+    <link rel="shortcut icon" href="/static/img/facio.ico" type="image/x-icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/static/css/animate.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet">
+<link href="/static/css/colorbox.css" rel="stylesheet">
+<link href="/static/css/vaildator/jquery.validator.css" rel="stylesheet">
+<link href="/static/css/magnific/magnific-popup.css" rel="stylesheet">
+<link href="/static/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+<link href="/static/css/plugins/dropzone/basic.css" rel="stylesheet">
+<link href="/static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <script src="/static/js/jquery-2.1.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/base.js"></script>
+
+<!-- pop windows -->
+<script src="/static/js/jquery.colorbox.js"></script>
+
+<!-- validator js -->
+<script src="/static/js/validator/jquery.validator.js"></script>
+<script src="/static/js/validator/zh_CN.js"></script>
+<script src="/static/js/datapicker/bootstrap-datepicker.js"></script>
+
+
+     
+<link rel="stylesheet" href="http://demo.jumpserver.org/static/js/layer/skin/layer.css" id="layui_layer_skinlayercss"><script data-require-id="echarts/chart/line" src="/static/js/echarts/chart/line.js" async=""></script><script data-require-id="echarts/chart/pie" src="/static/js/echarts/chart/pie.js" async=""></script></head>
+
+<body class=" pace-done"><div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+
+    <div id="wrapper">
+        
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            
+<li class="nav-header">
+    <div class="dropdown profile-element">
+        <span>
+            <img alt="image" class="img-circle" width="48" height="48" src="/static/img/root.png">
+        </span>
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+            <span class="clear">
+                <span class="block m-t-xs">
+                    <strong class="font-bold">admin  <span style="color: #8095a8"></span></strong>
+                </span>
+                <span class="text-muted text-xs block">
+                    超级管理员 <b class="caret"></b>
+                </span>
+            </span>
+        </a>
+        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+            <li><a value="/juser/user/profile/?id=1" class="iframe_user">个人信息</a></li>
+            <li><a href="/juser/user/update/">修改信息</a></li>
+
+
+
+
+
+
+
+            <li class="divider"></li>
+            <li><a href="/loginout">注销</a></li>
+        </ul>
+    </div>
+
+    <div class="logo-element">
+        JS+
+    </div>
+</li>
+<script>
+    $(".iframe_user").on('click', function(){
+        var url= $(this).attr("value");
+        layer.open({
+            type: 2,
+            title: '个人信息',
+            maxmin: true,
+            shift: 'top',
+            border: [2, 0.3, '#1AB394'],
+            shade: [0.5, '#000000'],
+            shadeClose: true,
+            area : ['800px' , '600px'],
+            content: url
+        });
+    });
+</script>
+
+
+            <li id="index" class="active">
+               <a href="/user"><i class="fa fa-dashboard"></i> <span class="nav-label">仪表盘</span><span class="label label-info pull-right"></span></a>
+            </li>
+            <li id="juser">
+                <a href="#"><i class="fa fa-group"></i> <span class="nav-label">用户管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="group"><a href="/juser/group/list/">查看用户组</a></li>
+                    <li class="user"><a href="/juser/user/list/">查看用户<span class="label label-primary pull-right">2/2</span></a></li>
+                </ul>
+            </li>
+            <li id="jasset">
+                <a><i class="fa fa-inbox"></i> <span class="nav-label">资产管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="group"><a href="/jasset/group/list/">查看资产组</a></li>
+                    <li class="asset"> <a href="/jasset/asset/list/">查看资产<span class="label label-info pull-right">1/1</span></a></li>
+                    <li class="idc"> <a href="/jasset/idc/list/">查看机房</a></li>
+                </ul>
+            </li>
+            <li id="jperm">
+                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">授权管理</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="sudo">
+                        <a class="sudo" href="/jperm/sudo/list/">Sudo</a>
+                    </li>
+                    <li class="role">
+                        <a href="/jperm/role/list/">系统用户</a>
+                    </li>
+                    <li class="rule">
+                        <a href="/jperm/rule/list/">授权规则</a>
+                    </li>
+                </ul>
+            </li>
+            <li id="jlog">
+               <a href="/jlog/list/online/"><i class="fa fa-files-o"></i> <span class="nav-label">日志审计</span><span class="label label-info pull-right"></span></a>
+            </li>
+            <li id="file">
+                <a href="#"><i class="fa fa-download"></i> <span class="nav-label">上传下载</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="upload"><a href="/file/upload/">文件上传</a></li>
+                    <li class="download"><a href="/file/download/">文件下载</a></li>
+                </ul>
+            </li>
+            <li id="setting">
+                   <a href="/setting"><i class="fa fa-gears"></i> <span class="nav-label">设置</span><span class="label label-info pull-right"></span></a>
+            </li>
+            <li class="special_link">
+                <a href="http://www.jumpserver.org" target="_blank"><i class="fa fa-database"></i> <span class="nav-label">访问官网</span></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                
+
+<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        <form role="search" class="navbar-form-custom" method="get" action="">
+            <div class="form-group">
+                <input type="text" placeholder="输入搜索..." class="form-control" name="search" id="top-search">
+            </div>
+        </form>
+    </div>
+    <ul class="nav navbar-top-links navbar-right">
+        <li>
+            <span class="m-r-sm text-muted welcome-message">{{ username }},欢迎使用运维管理平台</span>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                 <span class="m-r-sm text-muted welcome-message">帮助</span>
+            </a>
+        </li>
+        <li>
+            <a href="/loginout">
+                <i class="fa fa-sign-out"></i>退出 
+            </a>
+        </li>
+    </ul>
+</nav>
+            </div>
+            
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-10">
+        <h2></h2>
+        <ol class="breadcrumb">
+            <li>
+                <p>编辑用户</p>
+            </li>
+            <li>
+            
+            </li>
+            
+        </ol>
+    </div>
+    <div class="col-sm-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+	<div class="col-sm-10">
+	    <div class="ibox float-e-margins">
+		<div class="ibox-title">
+		    <h>修改密码</h>
+		    <div class="ibox-tools">
+			<a class="collapse-link">
+			    <i class="fa fa-chevron-up"></i>
+			</a>
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			    <i class="fa fa-wrench"></i>
+			</a>
+			<a class="close-link">
+			    <i class="fa fa-times"></i>
+			</a>
+		    </div>
+		</div>
+		<div class="ibox-content">
+		    <form method="post" id="modpwdForm" class="form-horizontal">
+			<div>
+			    <input id='id' type='hidden' name='id' readonly='true' >
+			</div><!-- id -->
+
+			<div class='form-group'>
+                            <label for="name" class="col-sm-2 control-label">用户名<span class="red-fonts">*</span></label>
+                            <div class="col-sm-8">
+                                <input id="name" name="name" placeholder="Username" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+			<div id='password_div' class="form-group">
+			    <label for="password" class="col-sm-2 control-label">旧密码<span class="red-fonts">*</span></label>
+			    <div class="col-sm-8">
+				<input id="password" name="password" placeholder="Password" type="password" class="form-control">
+			    </div>
+			</div>
+                        <div class="hr-line-dashed"></div>
+			<div class="form-group">
+			    <label for="newpassword" class="col-sm-2 control-label">新密码<span class="red-fonts">*</span></label>
+			    <div class="col-sm-8">
+				<input id="newpassword" name="newpassword" placeholder="Newpassword" type="password" class="form-control">
+			    </div>
+			</div>
+                        <div class="hr-line-dashed"></div>
+			<div class="form-group">
+			    <label for="renewpassword" class="col-sm-2 control-label">再次输入<span class="red-fonts">*</span></label>
+			    <div class="col-sm-8">
+				<input id="renewpassword" name="renewpassword" placeholder="Input again" type="password" class="form-control">
+			    </div>
+			</div>
+                        <div >
+			    <div class="col-sm-4 col-sm-offset-2">
+			        <button id="modpwdbtn" class="btn btn-primary" type="submit">确认保存</button>
+	                        <p id='intro' style="color:red"></p>
+			    </div>
+			</div>
+		    </form>
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
+
+<!--
+<form id="modpwdForm">
+    <input id='id' type='text' name='id' readonly='true' >
+
+    <div>
+	<label>用户名:&nbsp&nbsp&nbsp</label>
+	<input id='name' type='text' name='name' readonly='true' >
+    </div>
+
+    <div id='password_div'>
+	<label>密码:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+	<input id='password' type='password' name='password'>
+    </div>
+
+    <div>
+	<label>新密码:&nbsp&nbsp&nbsp</label>
+	<input id='mobile' type='password' name='newpassword'>
+    </div>
+    
+   <div>
+	<label>重新输入:</label>
+	<input id='email' type='password' name='renewpassword'>
+    </div>
+
+    <div>
+	<button id='modpwdbtn' type="submit">确认</button>
+    </div>
+
+</form>-->
+
+
+
+<script>
+var name = "{{ name }}"
+var url = "modpwd_msg?name="+name
+$.getJSON(url,function(data){
+    if (data['code'] == 0){
+        user = data['result']
+	$('#id').val(user['id'])
+	$('#name').val(user['name'])
+	$('#password').val(user['password'])
+	$('#password_div').hide()
+    }else if (data['code'] == 2){
+	user = data['result']
+	$('#id').val(user['id'])
+	$('#name').val(user['name'])
+    }else{
+	$('#errmsg').html('fail')
+    }
+})
+
+$('#modpwdbtn').click(function(){
+    var str = $('#modpwdForm').serialize()
+    $.post('/modpwd',str,function(data){
+        data=JSON.parse(data)
+        if (data['code']==0){
+	    alert(data['result'])
+	    location.href='/user'
+        }else{
+            $('#intro').text(data['errmsg']).fadeOut(2000)
+            setTimeout(function(){location.reload()},2000) 
+        }
+    })
+    return false
+})
+
+</script>
+
+
+<!--    </div> -->
+
+
+    <!-- Mainly scripts -->
+<script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/static/js/bootstrap-dialog.js"></script>
+<script src="/static/js/mindmup-editabletable.js"></script>
+<script src="/static/js/plugins/fullcalendar/moment.min.js"></script>
+<script src="/static/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="/static/js/inspinia.js"></script>
+<script src="/static/js/plugins/pace/pace.min.js"></script>
+
+<!-- Peity -->
+<script src="/static/js/plugins/peity/jquery.peity.min.js"></script>
+
+<!-- Peity -->
+<script src="/static/js/demo/peity-demo.js"></script>
+
+<script src="/static/js/base.js"></script>
+
+<!-- pop windows layer-->
+<script src="/static/js/layer/layer.js"></script>
+
+<!-- highcharts -->
+<script src="/static/js/highcharts/highcharts.js"></script>
+
+
+<script src="/static/js/dropzone/dropzone.js"></script>
+<!-- active menu -->
+<script>
+    var url_array = document.location.pathname.split("/");
+    s1 = url_array[1];
+    s2 = url_array[2];
+    if (s1 == ''){
+        $('#index').addClass('active')
+    } else {
+        $("#"+s1).addClass('active');
+        $('#'+s1+' .'+s2).addClass('active');
+    }
+</script>
+
+    
+<script src="/static/js/echarts/echarts.js"></script>
+<script>
+$(document).ready(function(){
+    $('#show').click(function(){
+        $('#show').css('display', 'none');
+        $('#more').css('display', 'block');
+    })
+});
+
+    require.config({
+        paths: {
+            'echarts': '/static/js/echarts/chart',
+            'echarts/chart/line': '/static/js/echarts/chart/line',
+            'echarts/chart/pie': '/static/js/echarts/chart/pie'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/chart/line'
+        ],
+        function (ec) {
+            var top10Chart = ec.init(document.getElementById('top10'));
+            var option = {
+                title : {
+                    text: '月数据总览',
+                    subtext: '一个月内历史汇总',
+                    x: 'center'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                backgroundColor: '#fff',
+                legend: {
+                    data:['登陆次数', '活跃用户','活跃资产'],
+                    y: 'bottom'
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+
+
+                        magicType : {show: true, type: ['line', 'bar']}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ['07-30', '07-31', '08-01', '08-02', '08-03', '08-04', '08-05', '08-06', '08-07', '08-08', '08-09', '08-10', '08-11', '08-12', '08-13', '08-14', '08-15', '08-16', '08-17', '08-18', '08-19', '08-20', '08-21', '08-22', '08-23', '08-24', '08-25', '08-26', '08-27', '08-28']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'登陆次数',
+                        type:'line',
+                        smooth:true,
+                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0]
+                    },
+                    {
+                        name:'活跃用户',
+                        type:'line',
+                        smooth:true,
+                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+                    },
+                    {
+                        name:'活跃资产',
+                        type:'line',
+                        smooth:true,
+                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0]
+                    }
+
+                ]
+            };
+
+            top10Chart.setOption(option);
+        }
+    );
+
+    require(
+        [
+            'echarts',
+            'echarts/chart/pie'
+        ],
+        function (ec) {
+            var auChart = ec.init(document.getElementById('activeUser'));
+            var option = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{b} <br> {c} ({d}%)"
+                },
+                legend: {
+                    show: false,
+                    orient : 'vertical',
+                    x : 'left',
+                    data:['月活跃用户','禁用用户','月未登陆用户']
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    x: '25%',
+                                    width: '50%',
+                                    funnelAlign: 'center',
+                                    max: 1548
+                                }
+                            }
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius : ['50%', '70%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : false
+                                },
+                                labelLine : {
+                                    show : false
+                                }
+                            },
+                            emphasis : {
+                                label : {
+                                    show : true,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '5',
+                                        fontWeight : 'bold'
+                                    }
+                                }
+                            }
+                        },
+                        data:[
+                            {value:1, name:'月活跃用户'},
+                            {value:0, name:'禁用用户'},
+                            {value:1, name:'月未登陆用户'}
+
+                        ]
+                    }
+                ]
+            };
+
+            auChart.setOption(option);
+        }
+    );
+
+    require(
+        [
+            'echarts',
+            'echarts/chart/pie'
+        ],
+        function (ec) {
+            var aaChart = ec.init(document.getElementById('activeAsset'));
+            var option = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{b} <br> {c} ({d}%)"
+                },
+                legend: {
+                    show: false,
+                    orient : 'vertical',
+                    x : 'left',
+                    data:['月被登陆主机','禁用主机','月未登陆主机']
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    x: '25%',
+                                    width: '50%',
+                                    funnelAlign: 'center',
+                                    max: 1548
+                                }
+                            }
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius : ['50%', '70%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : false
+                                },
+                                labelLine : {
+                                    show : false
+                                }
+                            },
+                            emphasis : {
+                                label : {
+                                    show : true,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '5',
+                                        fontWeight : 'bold'
+                                    }
+                                }
+                            }
+                        },
+                        data:[
+                            {value:2, name:'月被登陆主机'},
+                            {value:0, name:'禁用主机'},
+                            {value:0, name:'月未登陆主机'}
+
+                        ]
+                    }
+                ]
+            };
+
+            aaChart.setOption(option);
+        }
+    );
+
+</script>
+
+
+
+</div><div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><button type="button" id="cboxPrevious"></button><button type="button" id="cboxNext"></button><button id="cboxSlideshow"></button><div id="cboxLoadingOverlay" style="float: left;"></div><div id="cboxLoadingGraphic" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div></div><div class="theme-config">
+    <div class="theme-config-box">
+        <div class="spin-icon">
+            <i class="fa fa-cogs fa-spin"></i>
+        </div>
+        <div class="skin-setttings">
+            <div class="title">Configuration</div>
+            <div class="setings-item">
+                    <span>
+                        Collapse menu
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="collapsemenu">
+                        <label class="onoffswitch-label" for="collapsemenu">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Fixed sidebar
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="fixedsidebar" class="onoffswitch-checkbox" id="fixedsidebar">
+                        <label class="onoffswitch-label" for="fixedsidebar">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Top navbar
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox" id="fixednavbar">
+                        <label class="onoffswitch-label" for="fixednavbar">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Boxed layout
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox" id="boxedlayout">
+                        <label class="onoffswitch-label" for="boxedlayout">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Fixed footer
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="fixedfooter" class="onoffswitch-checkbox" id="fixedfooter">
+                        <label class="onoffswitch-label" for="fixedfooter">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="title">Skins</div>
+            <div class="setings-item default-skin">
+                    <span class="skin-name ">
+                         <a href="#" class="s-skin-0">
+                             Default
+                         </a>
+                    </span>
+            </div>
+            <div class="setings-item blue-skin">
+                    <span class="skin-name ">
+                        <a href="#" class="s-skin-1">
+                            Blue light
+                        </a>
+                    </span>
+            </div>
+            <div class="setings-item yellow-skin">
+                    <span class="skin-name ">
+                        <a href="#" class="s-skin-3">
+                            Yellow/Purple
+                        </a>
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Config box
+
+    // Enable/disable fixed top navbar
+    $('#fixednavbar').click(function () {
+        if ($('#fixednavbar').is(':checked')) {
+            $(".navbar-static-top").removeClass('navbar-static-top').addClass('navbar-fixed-top');
+            $("body").removeClass('boxed-layout');
+            $("body").addClass('fixed-nav');
+            $('#boxedlayout').prop('checked', false);
+        } else {
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("body").removeClass('fixed-nav');
+        }
+    });
+
+    // Enable/disable fixed sidebar
+    $('#fixedsidebar').click(function () {
+        if ($('#fixedsidebar').is(':checked')) {
+            $("body").addClass('fixed-sidebar');
+            $('.sidebar-collapse').slimScroll({
+                height: '100%',
+                railOpacity: 0.9,
+            });
+        } else {
+            $('.sidebar-collapse').slimscroll({destroy: true});
+            $('.sidebar-collapse').attr('style', '');
+            $("body").removeClass('fixed-sidebar');
+        }
+    });
+
+    // Enable/disable collapse menu
+    $('#collapsemenu').click(function () {
+        if ($('#collapsemenu').is(':checked')) {
+            $("body").addClass('mini-navbar');
+            SmoothlyMenu();
+        } else {
+            $("body").removeClass('mini-navbar');
+            SmoothlyMenu();
+        }
+    });
+
+    // Enable/disable boxed layout
+    $('#boxedlayout').click(function () {
+        if ($('#boxedlayout').is(':checked')) {
+            $("body").addClass('boxed-layout');
+            $('#fixednavbar').prop('checked', false);
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("body").removeClass('fixed-nav');
+            $(".footer").removeClass('fixed');
+            $('#fixedfooter').prop('checked', false);
+        } else {
+            $("body").removeClass('boxed-layout');
+        }
+    });
+
+    // Enable/disable fixed footer
+    $('#fixedfooter').click(function () {
+        if ($('#fixedfooter').is(':checked')) {
+            $('#boxedlayout').prop('checked', false);
+            $("body").removeClass('boxed-layout');
+            $(".footer").addClass('fixed');
+        } else {
+            $(".footer").removeClass('fixed');
+        }
+    });
+
+    // SKIN Select
+    $('.spin-icon').click(function () {
+        $(".theme-config-box").toggleClass("show");
+    });
+
+    // Default skin
+    $('.s-skin-0').click(function () {
+        $("body").removeClass("skin-1");
+        $("body").removeClass("skin-2");
+        $("body").removeClass("skin-3");
+    });
+
+    // Blue skin
+    $('.s-skin-1').click(function () {
+        $("body").removeClass("skin-2");
+        $("body").removeClass("skin-3");
+        $("body").addClass("skin-1");
+    });
+
+    // Inspinia ultra skin
+    $('.s-skin-2').click(function () {
+        $("body").removeClass("skin-1");
+        $("body").removeClass("skin-3");
+        $("body").addClass("skin-2");
+    });
+
+    // Yellow skin
+    $('.s-skin-3').click(function () {
+        $("body").removeClass("skin-1");
+        $("body").removeClass("skin-2");
+        $("body").addClass("skin-3");
+    });
+
+</script></body></html>

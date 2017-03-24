@@ -1,0 +1,24 @@
+<p>which user you want to delete</p>
+<form action='/delete'>
+    delete:<input type='text' name='user'>
+    <input type='submit' value='commit'>
+</form>
+
+<table border='1'>
+    <thead>
+	<tr>
+	    <td> Name </td>
+	    <td> Password </td>
+	</tr>
+    </thead>
+    <tbody>
+	{% for name in names %}
+	{% if name and names[name] %}
+ 	<tr>
+	    <td>{{name}}</td>
+	    <td>{{names[name]}}</td>
+ 	</tr>
+	{%endif%}
+	{%endfor%}
+    </tbody>
+</table>
